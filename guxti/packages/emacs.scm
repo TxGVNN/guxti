@@ -1,5 +1,6 @@
 (define-module (guxti packages emacs)
   #:use-module (guix packages)
+  #:use-module (guix gexp)
   #:use-module (guix download)
   #:use-module (guix git-download)
   #:use-module (guix build-system emacs)
@@ -125,3 +126,66 @@ comments and Org files in the Magit status buffer.  Activating an item jumps
 to it in its file.  By default, it uses keywords from @code{hl-todo}, minus a
 few (like NOTE).")
     (license license:gpl3)))
+
+(define-public emacs-elisp-refs
+  (package
+    (name "emacs-elisp-refs")
+    (version "1.4-20230114")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/Wilfred/elisp-refs")
+             (commit "af73739084637c8ebadad337a8fe58ff4f1d2ec1")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0kbx2dxvbidl2fjxw41hhdhk4iicvdf9zwxmgdr2glrf3sv9ncb5"))))
+    (build-system emacs-build-system)
+    (propagated-inputs
+     (list emacs-dash
+           emacs-f
+           emacs-list-utils
+           emacs-loop
+           emacs-s
+           emacs-shut-up))
+    (native-inputs
+     (list emacs-ert-runner emacs-undercover))
+    (arguments
+     (list
+      #:tests? #t
+      #:test-command #~(list "ert-runner")))
+    (home-page "https://github.com/Wilfred/elisp-refs")
+    (synopsis "Find callers of elisp functions or macros")
+    (description "@code{elisp-refs} finds references to functions, macros or
+variables.  Unlike a dumb text search, it actually parses the code, so it's
+never confused by comments or @code{foo-bar} matching @code{foo}.")
+    (license license:gpl3+)))
+
+
+(define-public emacs-helpful
+  (package
+    (name "emacs-helpful")
+    (version "0.19-20230114")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/Wilfred/helpful")
+             (commit "0.19")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0qwsifzsjw95l83m7z07fr9h1sqbhggwmcps1qgbddpan2a8ab8a"))
+       (patches (search-patches "emacs-helpful-fix-docstring-test.patch"))))
+    (build-system emacs-build-system)
+    (propagated-inputs
+     (list emacs-elisp-refs emacs-dash emacs-s emacs-f emacs-shut-up))
+    (native-inputs
+     (list emacs-ert-runner emacs-undercover))
+    (arguments
+     `(#:tests? #t
+       #:test-command '("ert-runner")))
+    (home-page "https://github.com/Wilfred/helpful")
+    (synopsis "More contextual information in Emacs help")
+    (description "@code{helpful} is an alternative to the built-in Emacs help
+that provides much more contextual information.")
+    (license license:gpl3+)))
