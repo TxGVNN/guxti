@@ -32,18 +32,24 @@ some utility functions, and commands using that infrastructure.")
 (define-public emacs-crux
   (package
     (name "emacs-crux")
-    (version "0.4.0-20230113")
+    (version "0.4.0-28-20230113")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/bbatsov/crux")
-             (commit "0.4.0")))
+             (commit "f8789f6")))
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "1h28chpyq61k72qh749r5kqq1y70wx3xw9c3zyfzmy750wlw6nyj"))
-       (patches (search-patches "emacs-crux.patch"))))
+         "0bsyrp0xmsi1vdpgpx6n3vfrmh75bpp8ncync8srzx6clbl71ch4"))
+       (patches
+        (parameterize
+            ((%patch-path
+              (map (lambda (directory)
+                     (string-append directory "/guxti/packages/patches"))
+                   %load-path)))
+          (search-patches "emacs-crux.patch")))))
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-seq emacs-shrink-path))
     (home-page "https://github.com/bbatsov/crux")
