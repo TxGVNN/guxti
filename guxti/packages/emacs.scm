@@ -189,3 +189,24 @@ never confused by comments or @code{foo-bar} matching @code{foo}.")
     (description "@code{helpful} is an alternative to the built-in Emacs help
 that provides much more contextual information.")
     (license license:gpl3+)))
+
+(define-public emacs-elpa-mirror
+  (package
+    (name "emacs-elpa-mirror")
+    (version "2.2.0-20230115")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/TxGVNN/elpa-mirror")
+             (commit "eadf584")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1p89dgnyina60ipvzys1lzfs9havwpn1nh9vmd9qn6lgr5028k3y"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/redguardtoo/elpa-mirror")
+    (synopsis "Pixel-perfect visual alignment for Org and Markdown tables")
+    (description
+     "This program will create a local package repository by from all
+installed packages.")
+    (license license:gpl3+)))
