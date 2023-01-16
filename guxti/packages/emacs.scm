@@ -175,7 +175,13 @@ never confused by comments or @code{foo-bar} matching @code{foo}.")
        (file-name (git-file-name name version))
        (sha256
         (base32 "0qwsifzsjw95l83m7z07fr9h1sqbhggwmcps1qgbddpan2a8ab8a"))
-       (patches (search-patches "emacs-helpful-fix-docstring-test.patch"))))
+       (patches
+        (parameterize
+            ((%patch-path
+              (map (lambda (directory)
+                     (string-append directory "/guxti/packages/patches"))
+                   %load-path)))
+          (search-patches "emacs-helpful-fix-docstring-test.patch")))))
     (build-system emacs-build-system)
     (propagated-inputs
      (list emacs-elisp-refs emacs-dash emacs-s emacs-f emacs-shut-up))
