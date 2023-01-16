@@ -216,3 +216,33 @@ that provides much more contextual information.")
      "This program will create a local package repository by from all
 installed packages.")
     (license license:gpl3+)))
+
+(define-public emacs-consult
+  (let ((commit "0.31"))
+    (package
+      (name "emacs-consult")
+      (version "0.31-20230116")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/minad/consult")
+               (commit commit)))
+         (sha256
+          (base32 "0ckyn4sdhc9dykbbdiin75jxza883dqa3g4mvf8qgsnzlqcjvvg6"))
+         (file-name (git-file-name name version))
+         (patches
+          (parameterize
+              ((%patch-path
+                (map (lambda (directory)
+                       (string-append directory "/guxti/packages/patches"))
+                     %load-path)))
+            (search-patches "emacs-consult.patch")))))
+      (build-system emacs-build-system)
+      (propagated-inputs (list emacs-compat))
+      (home-page "https://github.com/minad/consult")
+      (synopsis "Consulting completing-read")
+      (description "This package provides various handy commands based on the
+Emacs completion function completing-read, which allows quickly selecting from a
+list of candidates.")
+      (license license:gpl3+))))

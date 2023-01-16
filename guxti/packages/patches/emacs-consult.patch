@@ -1,0 +1,22 @@
+diff --git a/consult.el b/consult.el
+index cd8d697..1cf6b76 100644
+--- a/consult.el
++++ b/consult.el
+@@ -933,15 +933,12 @@ Otherwise the `default-directory' is returned."
+             ;; such that `consult-customize' continues to work.
+             (let ((this-command this-command))
+               (read-directory-name "Directory: " nil nil t)))
+-           (t (or (consult--project-root) default-directory))))
++           (t default-directory)))
+          (edir (file-name-as-directory (expand-file-name dir)))
+          ;; Bind default-directory in order to find the project
+          (pdir (let ((default-directory edir)) (consult--project-root))))
+     (cons
+-     (format "%s (%s): " prompt
+-             (if (equal edir pdir)
+-                 (concat "Project " (consult--project-name pdir))
+-               (consult--abbreviate-directory dir)))
++     (format "%s (%s): " prompt (consult--abbreviate-directory dir))
+      edir)))
+ 
+ (defun consult--default-project-function (may-prompt)
