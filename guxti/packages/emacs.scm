@@ -246,3 +246,64 @@ installed packages.")
 Emacs completion function completing-read, which allows quickly selecting from a
 list of candidates.")
       (license license:gpl3+))))
+
+(define-public emacs-embark
+  (let ((commit "0.19"))
+    (package
+      (name "emacs-embark")
+      (version "0.19-20230116")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/oantolin/embark")
+               (commit commit)))
+         (sha256
+          (base32 "05c8p7rqv9p8p3nhgcjfr66hpsqazhnhwsnfdapxd9z7wrybqbg5"))
+         (file-name (git-file-name name version))))
+      (build-system emacs-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases %standard-phases
+           (add-after 'unpack 'delete-files
+             (lambda _
+               (delete-file "embark-consult.el")
+               (delete-file "avy-embark-collect.el"))))))
+      (home-page "https://github.com/oantolin/embark")
+      (synopsis "Emacs mini-buffer actions rooted in keymaps")
+      (description
+       "This package provides a sort of right-click contextual menu for Emacs
+offering you relevant @emph{actions} to use on a @emph{target} determined by
+the context.")
+      (license license:gpl3+))))
+
+(define-public emacs-embark-consult
+  (package
+    (name "emacs-embark-consult")
+    (version "0.19")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/oantolin/embark")
+             (commit version)))
+       (sha256
+        (base32 "05c8p7rqv9p8p3nhgcjfr66hpsqazhnhwsnfdapxd9z7wrybqbg5"))
+       (file-name (git-file-name name version))))
+    (build-system emacs-build-system)
+    (propagated-inputs
+     (list emacs-consult emacs-embark))
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after 'unpack 'delete-files
+           (lambda _
+             (delete-file "embark.el")
+             (delete-file "embark-org.el")
+             (delete-file "avy-embark-collect.el"))))))
+    (home-page "https://github.com/oantolin/embark")
+    (synopsis "This package provides integration between Embark and Consult")
+    (description
+     "This package provides integration between Embark and Consult. The package
+will be loaded automatically by Embark.")
+    (license license:gpl3+)))
