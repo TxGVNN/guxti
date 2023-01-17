@@ -165,23 +165,16 @@ never confused by comments or @code{foo-bar} matching @code{foo}.")
 (define-public emacs-helpful
   (package
     (name "emacs-helpful")
-    (version "0.19-20230114")
+    (version "0.19-20230117")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/Wilfred/helpful")
-             (commit "0.19")))
+             (commit "94c2533")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0qwsifzsjw95l83m7z07fr9h1sqbhggwmcps1qgbddpan2a8ab8a"))
-       (patches
-        (parameterize
-            ((%patch-path
-              (map (lambda (directory)
-                     (string-append directory "/guxti/packages/patches"))
-                   %load-path)))
-          (search-patches "emacs-helpful-fix-docstring-test.patch")))))
+        (base32 "09da3d3kx4c8im58kwfv59zpwda70yvwnjk01w7r6lra1ww8d3yx"))))
     (build-system emacs-build-system)
     (propagated-inputs
      (list emacs-elisp-refs emacs-dash emacs-s emacs-f emacs-shut-up))
