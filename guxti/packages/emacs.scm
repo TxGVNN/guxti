@@ -70,7 +70,7 @@ some utility functions, and commands using that infrastructure.")
 (define-public emacs-perspective
   (package
     (name "emacs-perspective")
-    (version "2.16-7-20230114")
+    (version "2.16.20230114")
     (source
      (origin
        (method git-fetch)
@@ -89,7 +89,17 @@ some utility functions, and commands using that infrastructure.")
           (search-patches "emacs-perspective.patch")))))
     (build-system emacs-build-system)
     (arguments
-     `(#:tests? #t
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))
+
+       #:tests? #t
        #:test-command '("emacs" "-Q" "-batch" "-L" "."
                         "-l" "test/test-perspective.el"
                         "-f" "ert-run-tests-batch-and-exit")))
@@ -109,7 +119,7 @@ perspective only its buffers are available by default.")
 (define-public emacs-magit-todos
   (package
     (name "emacs-magit-todos")
-    (version "1.5.3-19-gc5030cc")
+    (version "1.5.3.20230119")
     (source
      (origin
        (method git-fetch)
@@ -121,6 +131,16 @@ perspective only its buffers are available by default.")
         (base32
          "0j32zslcbiaq2a6ppyzdq4x59payya5hzd2kpw3mdj0p479byz19"))))
     (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
     (propagated-inputs
      (list emacs-async
            emacs-dash
@@ -140,7 +160,7 @@ few (like NOTE).")
 (define-public emacs-elisp-refs
   (package
     (name "emacs-elisp-refs")
-    (version "1.4-20230114")
+    (version "1.4.20230114")
     (source
      (origin
        (method git-fetch)
@@ -161,9 +181,17 @@ few (like NOTE).")
     (native-inputs
      (list emacs-ert-runner emacs-undercover))
     (arguments
-     (list
-      #:tests? #t
-      #:test-command #~(list "ert-runner")))
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))
+       #:tests? #t
+       #:test-command '("ert-runner")))
     (home-page "https://github.com/Wilfred/elisp-refs")
     (synopsis "Find callers of elisp functions or macros")
     (description "@code{elisp-refs} finds references to functions, macros or
@@ -175,7 +203,7 @@ never confused by comments or @code{foo-bar} matching @code{foo}.")
 (define-public emacs-helpful
   (package
     (name "emacs-helpful")
-    (version "0.19-20230117")
+    (version "0.19.20230117")
     (source
      (origin
        (method git-fetch)
@@ -202,7 +230,7 @@ that provides much more contextual information.")
 (define-public emacs-elpa-mirror
   (package
     (name "emacs-elpa-mirror")
-    (version "2.2.0-20230115")
+    (version "2.2.0.20230115")
     (source
      (origin
        (method git-fetch)
@@ -213,6 +241,16 @@ that provides much more contextual information.")
        (sha256
         (base32 "1p89dgnyina60ipvzys1lzfs9havwpn1nh9vmd9qn6lgr5028k3y"))))
     (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
     (home-page "https://github.com/redguardtoo/elpa-mirror")
     (synopsis "Pixel-perfect visual alignment for Org and Markdown tables")
     (description
@@ -224,7 +262,7 @@ installed packages.")
   (let ((commit "0.31"))
     (package
       (name "emacs-consult")
-      (version "0.31-20230116")
+      (version "0.31.20230116")
       (source
        (origin
          (method git-fetch)
@@ -242,6 +280,16 @@ installed packages.")
                      %load-path)))
             (search-patches "emacs-consult.patch")))))
       (build-system emacs-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases %standard-phases
+           (add-after
+               'unpack 'fix-version
+             (lambda _
+               (substitute*
+                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
+                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                  (string-append ";; Version: " ,version "\n"))))))))
       (propagated-inputs (list emacs-compat))
       (home-page "https://github.com/minad/consult")
       (synopsis "Consulting completing-read")
@@ -254,7 +302,7 @@ list of candidates.")
   (let ((commit "0.19"))
     (package
       (name "emacs-embark")
-      (version "0.19-20230116")
+      (version "0.19.20230116")
       (source
        (origin
          (method git-fetch)
@@ -268,6 +316,13 @@ list of candidates.")
       (arguments
        `(#:phases
          (modify-phases %standard-phases
+           (add-after
+               'unpack 'fix-version
+             (lambda _
+               (substitute*
+                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
+                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                  (string-append ";; Version: " ,version "\n")))))
            (add-after 'unpack 'delete-files
              (lambda _
                (delete-file "embark-consult.el")
