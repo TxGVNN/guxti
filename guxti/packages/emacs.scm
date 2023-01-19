@@ -31,7 +31,7 @@ some utility functions, and commands using that infrastructure.")
 (define-public emacs-crux
   (package
     (name "emacs-crux")
-    (version "0.4.0-28-20230113")
+    (version "0.4.0.20230115")
     (source
      (origin
        (method git-fetch)
@@ -50,6 +50,16 @@ some utility functions, and commands using that infrastructure.")
                    %load-path)))
           (search-patches "emacs-crux.patch")))))
     (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
     (propagated-inputs (list emacs-seq emacs-shrink-path))
     (home-page "https://github.com/bbatsov/crux")
     (synopsis "Collection of useful functions for Emacs")
