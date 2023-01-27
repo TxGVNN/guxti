@@ -1,4 +1,4 @@
-(define-module (guxti packages emacs)
+(define-module (guxti packages emacs-xyz)
   #:use-module (guix packages)
   #:use-module (guix gexp)
   #:use-module (guix download)
