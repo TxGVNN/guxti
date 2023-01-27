@@ -390,3 +390,38 @@ will be loaded automatically by Embark.")
 a completing-read interface.  It supports previewing the current snippet
 expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
+
+(define-public emacs-yasnippet-snippets
+  (let ((commit "2069875"))
+    (package
+      (name "emacs-yasnippet-snippets")
+      (version "1.0.20230127")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/TxGVNN/yasnippet-snippets")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "1dza3k50slfcccxzf24jajibhms1gkj0m7wrmz4c346h9vdffma7"))))
+      (build-system emacs-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases %standard-phases
+           (add-after
+               'unpack 'fix-version
+             (lambda _
+               (substitute*
+                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
+                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                  (string-append ";; Version: " ,version "\n"))))))
+         #:include (cons* "^snippets\\/" %default-include)))
+      (propagated-inputs
+       (list emacs-yasnippet))
+      (home-page "https://github.com/TxGVNN/yasnippet-snippets")
+      (synopsis "Collection of YASnippet snippets for many languages")
+      (description "This package provides an extensive collection of YASnippet
+snippets.  When this package is installed, the extra snippets it provides are
+automatically made available to YASnippet.")
+      (license license:gpl3+))))
