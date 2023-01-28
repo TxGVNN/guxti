@@ -1,0 +1,6 @@
+* Guix channel
+#+begin_src lisp
+ (channel
+  (name 'guxti)
+  (url "https://github.com/TxGVNN/guxti"))
+#+end_src
