@@ -176,13 +176,41 @@
    "07fl9d968lal0aqj4f0n16p3n94cjkgfp54wynfr8gbdkjss5v5x"
    "TypeScript/TSX grammar for tree-sitter in Emacs"))
 
+(define-public emacs-next-tree-sitter
+  (let ((commit "be67cc276a95a97a329fa633fef686ba06c8e6d2")
+        (revision "3"))
+    (package
+      (inherit emacs-next)
+      (name "emacs-next-tree-sitter")
+      (version (git-version "30.0.50" revision commit))
+      (source
+       (origin
+         (inherit (package-source emacs-next))
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://git.savannah.gnu.org/git/emacs.git")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32
+           "0daczbivmp1v8dzp98pn8d93m9np38avs0xyyvhd48b8ly71daia"))))
+      (arguments
+       (substitute-keyword-arguments (package-arguments
+                                      emacs-next)
+         ((#:configure-flags flags #~'())
+          #~(cons* "--with-tree-sitter" #$flags))))
+      (inputs
+       (modify-inputs
+           (package-inputs emacs-next)
+         (prepend tree-sitter))))))
+
 (define-public emacs-next-pgtk-tree-sitter
   (let ((commit "be67cc276a95a97a329fa633fef686ba06c8e6d2")
         (revision "3"))
     (package
       (inherit emacs-next-pgtk)
       (name "emacs-next-pgtk-tree-sitter")
-      (version (git-version "29.0.50" revision commit))
+      (version (git-version "30.0.50" revision commit))
       (source
        (origin
          (inherit (package-source emacs-next))
