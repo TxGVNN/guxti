@@ -99,13 +99,13 @@
 
 (define-public emacs-tree-sitter-grammar-c
   (emacs-tree-sitter-grammar
-   "tree-sitter" "c" "0.20.2" "5aa0bbb"
+   "tree-sitter" "c" "0.20.2" "7175a6d"
    "1w03r4l773ki4iq2xxsc2pqxf3pjsbybq3xq4glmnsihgylibn8v"
    "C grammar for tree-sitter in Emacs"))
 
 (define-public emacs-tree-sitter-grammar-cpp
   (emacs-tree-sitter-grammar
-   "tree-sitter" "cpp" "0.20.0" "05cf203"
+   "tree-sitter" "cpp" "0.20.0" "f445091"
    "0hxcpdvyyig8njga1mxp4qcnbbnr1d0aiy27vahijwbh98b081nr"
    "C++ grammar for tree-sitter in Emacs"))
 
@@ -117,7 +117,7 @@
 
 (define-public emacs-tree-sitter-grammar-c-sharp
   (emacs-tree-sitter-grammar
-   "tree-sitter" "c-sharp" "0.20.0" "70fd2cb"
+   "tree-sitter" "c-sharp" "0.20.0" "7a47dae"
    "0lijbi5q49g50ji00p2lb45rvd76h07sif3xjl9b31yyxwillr6l"
    "C# grammar for tree-sitter in Emacs"))
 
@@ -172,8 +172,8 @@
 
 (define-public emacs-tree-sitter-grammar-typescript
   (emacs-tree-sitter-grammar
-   "tree-sitter" "typescript" "0.20.1" "5d20856"
-   "07fl9d968lal0aqj4f0n16p3n94cjkgfp54wynfr8gbdkjss5v5x"
+   "tree-sitter" "typescript" "0.20.2" "5d20856"
+   "0934c35as3wgakqw20ilii8lvby5ns36mmqsxjwz8zg5zfsq14vj"
    "TypeScript/TSX grammar for tree-sitter in Emacs"))
 
 (define-public emacs-next-tree-sitter
