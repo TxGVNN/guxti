@@ -12,13 +12,13 @@
 (define-public emacs-project
   (package
     (name "emacs-project")
-    (version "0.9.4")
+    (version "0.9.8")
     (source
      (origin
        (method url-fetch)
        (uri (string-append "https://elpa.gnu.org/packages/project-" version ".tar"))
        (sha256
-        (base32 "10xmpx24k98crpddjdz1i4wck05kcnj3wdxhdj4km53nz8q66wbg"))))
+        (base32 "0i1q9blvpj3bygjh98gv0kqn2rm01b8lqp9vra82sy3hzzj39pyx"))))
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-xref))
     (home-page "https://elpa.gnu.org/packages/project.html")
