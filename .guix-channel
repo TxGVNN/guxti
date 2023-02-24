@@ -1,2 +1,8 @@
 (channel
-  (version 0))
+ (version 0)
+ (dependencies
+  (channel
+   (name guix)
+   (url "https://git.savannah.gnu.org/git/guix.git")
+   (branch "master")
+   (commit "5d10644371abd54d0edcd638691113f0a92de743"))))
