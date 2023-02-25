@@ -259,10 +259,10 @@ installed packages.")
     (license license:gpl3+)))
 
 (define-public emacs-consult
-  (let ((commit "0.31"))
+  (let ((commit "0.32"))
     (package
       (name "emacs-consult")
-      (version "0.31.20230116")
+      (version "0.32.20230224")
       (source
        (origin
          (method git-fetch)
@@ -270,16 +270,12 @@ installed packages.")
                (url "https://github.com/minad/consult")
                (commit commit)))
          (sha256
-          (base32 "0ckyn4sdhc9dykbbdiin75jxza883dqa3g4mvf8qgsnzlqcjvvg6"))
+          (base32 "00cgc3bzj37319ds027rpj60wfk0c10cgp5xish2g1cq5ny74q32"))
          (file-name (git-file-name name version))
-         (patches
-          (parameterize
-              ((%patch-path
-                (map (lambda (directory)
-                       (string-append directory "/guxti/packages/patches"))
-                     %load-path)))
-            (search-patches "emacs-consult.patch")))))
+         (patches (list (local-file
+                         "patches/emacs-consult.patch")))))
       (build-system emacs-build-system)
+      (propagated-inputs (list emacs-compat))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -290,7 +286,6 @@ installed packages.")
                    (string-append (string-drop ,name (string-length "emacs-")) ".el")
                  (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
                   (string-append ";; Version: " ,version "\n"))))))))
-      (propagated-inputs (list emacs-compat))
       (home-page "https://github.com/minad/consult")
       (synopsis "Consulting completing-read")
       (description "This package provides various handy commands based on the
@@ -299,10 +294,10 @@ list of candidates.")
       (license license:gpl3+))))
 
 (define-public emacs-embark
-  (let ((commit "0.19"))
+  (let ((commit "63013c2d3ef4dccc95167218ccbf4f401e489c3e")) ;version bump
     (package
       (name "emacs-embark")
-      (version "0.19.20230116")
+      (version "0.21.1.20230225")
       (source
        (origin
          (method git-fetch)
@@ -310,9 +305,11 @@ list of candidates.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "05c8p7rqv9p8p3nhgcjfr66hpsqazhnhwsnfdapxd9z7wrybqbg5"))
+          (base32 "14qp46wa1xgmb09jyk9cadj0b3m7bwspqnprk3zbfc6gw1r53235"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
+      (propagated-inputs
+       (list emacs-avy emacs-consult))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -336,17 +333,18 @@ the context.")
       (license license:gpl3+))))
 
 (define-public emacs-embark-consult
+  (let ((commit "63013c2d3ef4dccc95167218ccbf4f401e489c3e")) ;version bump
   (package
     (name "emacs-embark-consult")
-    (version "0.19")
+    (version "0.21.1")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/oantolin/embark")
-             (commit version)))
+             (commit commit)))
        (sha256
-        (base32 "05c8p7rqv9p8p3nhgcjfr66hpsqazhnhwsnfdapxd9z7wrybqbg5"))
+        (base32 "14qp46wa1xgmb09jyk9cadj0b3m7bwspqnprk3zbfc6gw1r53235"))
        (file-name (git-file-name name version))))
     (build-system emacs-build-system)
     (propagated-inputs
@@ -364,7 +362,7 @@ the context.")
     (description
      "This package provides integration between Embark and Consult. The package
 will be loaded automatically by Embark.")
-    (license license:gpl3+)))
+    (license license:gpl3+))))
 
 (define-public emacs-consult-yasnippet
   (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
