@@ -264,10 +264,10 @@ installed packages.")
     (license license:gpl3+)))
 
 (define-public emacs-consult
-  (let ((commit "0.32"))
+  (let ((commit "0.31"))
     (package
       (name "emacs-consult")
-      (version "0.32.20230224")
+      (version "0.31.20230224")
       (source
        (origin
          (method git-fetch)
@@ -275,7 +275,7 @@ installed packages.")
                (url "https://github.com/minad/consult")
                (commit commit)))
          (sha256
-          (base32 "00cgc3bzj37319ds027rpj60wfk0c10cgp5xish2g1cq5ny74q32"))
+          (base32 "0ckyn4sdhc9dykbbdiin75jxza883dqa3g4mvf8qgsnzlqcjvvg6"))
          (file-name (git-file-name name version))
          (patches (list (local-file
                          "patches/emacs-consult.patch")))))
@@ -371,10 +371,10 @@ will be loaded automatically by Embark.")
 
 (define-public emacs-consult-yasnippet
   (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
-        (revision "1"))
+        (revision "20230226"))
     (package
       (name "emacs-consult-yasnippet")
-      (version (git-version "0.2" revision commit))
+      (version (string-append "0.2." revision))
       (source
        (origin
          (method git-fetch)
