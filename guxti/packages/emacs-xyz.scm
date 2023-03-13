@@ -395,10 +395,10 @@ expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
 
 (define-public emacs-yasnippet-snippets
-  (let ((commit "2069875"))
+  (let ((commit "947d8f4"))
     (package
       (name "emacs-yasnippet-snippets")
-      (version "1.0.20230127")
+      (version "1.0.20230312")
       (source
        (origin
          (method git-fetch)
@@ -407,7 +407,7 @@ expansion and overwriting the marked region with a new snippet completion.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1dza3k50slfcccxzf24jajibhms1gkj0m7wrmz4c346h9vdffma7"))))
+          (base32 "1pb5dj587zr532wyll4p0f9zl9hcjjb6yswlk83zzk6ahf862467"))))
       (build-system emacs-build-system)
       (arguments
        `(#:phases
