@@ -191,7 +191,7 @@ connect to it.")
       (cut string-append
            (if xdg-flavor?
                "emacs/"
-               "emacs.d/")
+               ".emacs.d/")
            <>))
 
     (define (filter-fields field)
