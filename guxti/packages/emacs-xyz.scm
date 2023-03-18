@@ -233,35 +233,38 @@ that provides much more contextual information.")
     (license license:gpl3+)))
 
 (define-public emacs-elpa-mirror
-  (package
-    (name "emacs-elpa-mirror")
-    (version "2.2.0.20230115")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/TxGVNN/elpa-mirror")
-             (commit "eadf584")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "1p89dgnyina60ipvzys1lzfs9havwpn1nh9vmd9qn6lgr5028k3y"))))
-    (build-system emacs-build-system)
-    (arguments
-     `(#:phases
-       (modify-phases %standard-phases
-         (add-after
-             'unpack 'fix-version
-           (lambda _
-             (substitute*
-                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
-               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n"))))))))
-    (home-page "https://github.com/redguardtoo/elpa-mirror")
-    (synopsis "Pixel-perfect visual alignment for Org and Markdown tables")
-    (description
-     "This program will create a local package repository by from all
+  (let ((version "2.2.2.20230318")
+        (commit "9d7cfbf72ef8c7cd014c91e5bb3d8fbebda56140")
+        (hash "0lw018bn5a6z8pxzqscs196l8k18m1m9p0p6amr3n27qmf6fp3vw"))
+    (package
+      (name "emacs-elpa-mirror")
+      (version version)
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/redguardtoo/elpa-mirror")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 hash))))
+      (build-system emacs-build-system)
+      (arguments
+       `(#:phases
+         (modify-phases %standard-phases
+           (add-after
+               'unpack 'fix-version
+             (lambda _
+               (substitute*
+                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
+                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                  (string-append ";; Version: " ,version "\n"))))))))
+      (home-page "https://github.com/redguardtoo/elpa-mirror")
+      (synopsis "Create local emacs package repository.")
+      (description
+       "This program will create a local package repository by from all
 installed packages.")
-    (license license:gpl3+)))
+      (license license:gpl3+))))
 
 (define-public emacs-consult
   (let ((commit "0.31"))
