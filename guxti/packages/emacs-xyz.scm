@@ -810,3 +810,25 @@ rebasing, and other common Git operations.")
     (description "Work with Git forges, such as Github and Gitlab, from the
 comfort of Magit and the rest of Emacs.")
     (license license:gpl3+)))
+
+(define-public emacs-eev
+  (package
+    (name "emacs-eev")
+    (version "20230127")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "https://elpa.gnu.org/packages/eev-" version ".tar"))
+              (sha256
+               (base32 "12f8r1mymd73gjbha6w9fk1ar38yxgbnrr6asvr8aa9rhcwwgxqm"))))
+    (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (delete 'patch-el-files))))
+    (home-page "http://anggtwu.net/#eev")
+    (synopsis "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)")
+    (description
+     "Eev's central idea is that you can keep \"executable logs\" of what you do, in a
+format that is reasonably readable and that is easy to \"play back\" later, step
+by step and in any order.  We call these \"executable logs\" _e-scripts_.")
+    (license license:gpl3+)))
