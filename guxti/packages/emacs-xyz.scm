@@ -832,3 +832,27 @@ comfort of Magit and the rest of Emacs.")
 format that is reasonably readable and that is easy to \"play back\" later, step
 by step and in any order.  We call these \"executable logs\" _e-scripts_.")
     (license license:gpl3+)))
+
+(define-public emacs-combobulate
+  (let ((commit "6c36a85")
+        (hash "090sxd7pfq95pfylbsi6kwb82pz2rs1ny2gwq3m3m7xlhm2ar4n7"))
+    (package
+      (name "emacs-combobulate")
+      (version "0.1.20230318")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/mickeynp/combobulate")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256 (base32 hash))))
+      (build-system emacs-build-system)
+      (arguments
+       `(#:emacs ,emacs-next
+         #:include (cons* "^build\\/" %default-include)))
+      (home-page "https://github.com/mickeynp/combobulate")
+      (synopsis "Structured Navigation and Editing.")
+      (description "Combobulate is a package that adds structured editing
+and movement to a wide range of programming languages.")
+      (license license:gpl3+))))
