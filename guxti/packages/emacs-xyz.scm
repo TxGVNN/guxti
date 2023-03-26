@@ -433,10 +433,10 @@ automatically made available to YASnippet.")
       (license license:gpl3+))))
 
 (define-public emacs-transient
-  (let ((commit "v0.3.7"))
+  (let ((commit "0ae0de4"))
     (package
       (name "emacs-transient")
-      (version "0.3.7.20230226")
+      (version "0.3.7.20230326")
       (source
        (origin
          (method git-fetch)
@@ -445,7 +445,7 @@ automatically made available to YASnippet.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "0c7wbd0j0b802bzdpdkrx2q7wm7b9s56rk554dnadkpywhmdiqwn"))))
+          (base32 "01b60pj8k3vwvs2xsx5md2myz0l1dj1myh9jrdyaiyhcaacvlbq8"))))
       (build-system emacs-build-system)
       (arguments
        `(#:tests? #f                      ;no test suite
@@ -469,7 +469,7 @@ automatically made available to YASnippet.")
       (native-inputs
        (list texinfo))
       (propagated-inputs
-       (list emacs-dash))
+       (list emacs-dash emacs-compat))
       (home-page "https://magit.vc/manual/transient")
       (synopsis "Transient commands in Emacs")
       (description "Taking inspiration from prefix keys and prefix arguments
@@ -858,4 +858,26 @@ by step and in any order.  We call these \"executable logs\" _e-scripts_.")
       (synopsis "Structured Navigation and Editing.")
       (description "Combobulate is a package that adds structured editing
 and movement to a wide range of programming languages.")
+      (license license:gpl3+))))
+
+(define-public emacs-project-tasks
+  (let ((commit "e518e41")
+        (hash "1k4sk5aqsf02rkdjzn010snf4baswyxi4zcq38nkjpm0nnga19b7"))
+    (package
+      (name "emacs-project-tasks")
+      (version "0.0.1")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/TxGVNN/project-tasks")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256 (base32 hash))))
+      (build-system emacs-build-system)
+      (propagated-inputs (list emacs-project emacs-transient))
+      (home-page "https://github.com/TxGVNN/project-tasks")
+      (synopsis "Efficient task management for your project.")
+      (description
+       "Manage your tasks in a project by using org file and code blocks. I will call it is Tasks As Code.")
       (license license:gpl3+))))
