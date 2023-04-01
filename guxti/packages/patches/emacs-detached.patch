@@ -1,0 +1,30 @@
+diff --git a/detached.el b/detached.el
+index 7eda4df..ad0a77a 100644
+--- a/detached.el
++++ b/detached.el
+@@ -446,14 +446,17 @@ This version is encoded as [package-version].[revision].")
+ Optionally SUPPRESS-OUTPUT if prefix-argument is provided."
+   (interactive
+    (list
+-    (read-shell-command (if shell-command-prompt-show-cwd
+-                            (format-message "Detached shell command in `%s': "
+-                                            (abbreviate-file-name
+-                                             default-directory))
+-                          "Detached shell command: ")
+-                        (when detached-shell-command-initial-input
+-                          (car detached-shell-command-history))
+-                        'detached-shell-command-history)
++    (let ((history-prompt
++           (if detached-shell-command-initial-input
++               (format "(%s)" (car detached-shell-command-history)) "")))
++      (read-shell-command (if shell-command-prompt-show-cwd
++                              (format-message "Detached in `%s' %s: "
++                                              (abbreviate-file-name
++                                               default-directory) history-prompt)
++                            (format "Detached %s: " history-prompt)) nil
++                            'detached-shell-command-history
++                            (when detached-shell-command-initial-input
++                              (car detached-shell-command-history))))
+     current-prefix-arg))
+   (let* ((detached-session-origin (or detached-session-origin 'shell-command))
+          (detached-session-action (or detached-session-action

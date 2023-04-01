@@ -11,6 +11,7 @@
   #:use-module (gnu packages databases)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages perl)
+  #:use-module (gnu packages screen)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz))
 
@@ -884,3 +885,54 @@ and movement to a wide range of programming languages.")
       (description "Manage your tasks in a project by using org file and code blocks.
  I will call it is Tasks As Code.")
       (license license:gpl3+))))
+
+(define-public emacs-detached
+  (package
+    (name "emacs-detached")
+    (version "0.10.1.20230401")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://git.sr.ht/~niklaseklund/detached.el")
+             (commit "0.10.1")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         "0dvvyqc0nw9has54vps10f5iv831cb29vqvbvx0m2djv9pacqp17"))
+       (patches
+        (parameterize
+            ((%patch-path
+              (map (lambda (directory)
+                     (string-append directory "/guxti/packages/patches"))
+                   %load-path)))
+          (search-patches "emacs-detached.patch")))))
+    (arguments
+     (list
+      #:tests? #t
+      #:test-command #~(list "ert-runner")
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'fix-version
+            (lambda _
+              (substitute*
+                  (string-append (string-drop #$name (string-length "emacs-")) ".el")
+                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                 (string-append ";; Version: " #$version "\n")))))
+          (add-after 'unpack 'configure
+            (lambda* (#:key inputs #:allow-other-keys)
+              (emacs-substitute-variables "detached.el"
+                ("detached-dtach-program"
+                 (search-input-file inputs "/bin/dtach"))
+                ("detached-shell-program"
+                 (search-input-file inputs "/bin/bash"))))))))
+    (build-system emacs-build-system)
+    (native-inputs (list emacs-ert-runner))
+    (inputs (list dtach))
+    (home-page "https://git.sr.ht/~niklaseklund/detached.el")
+    (synopsis "Launch and manage detached processes from Emacs")
+    (description
+     "The Detached package allows users to run processes detached from Emacs.
+It provides integration with multiple built-in modes, as well as providing an
+interface to attach and interact with the processes.")
+    (license license:gpl3+)))
