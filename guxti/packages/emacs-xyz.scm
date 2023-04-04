@@ -889,7 +889,7 @@ and movement to a wide range of programming languages.")
 (define-public emacs-detached
   (package
     (name "emacs-detached")
-    (version "0.10.1.20230401")
+    (version "0.10.1.20230404")
     (source
      (origin
        (method git-fetch)
