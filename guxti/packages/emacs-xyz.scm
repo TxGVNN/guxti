@@ -532,10 +532,11 @@ on stdout instead of using a socket as the Emacsclient does.")
 
 
 (define-public emacs-envrc
-  (let ((commit "0.4"))
+  (let ((commit "1954e8c")
+        (hash "0vjk8k5k9xsngk50nf611c4j0bikqn9l1y3m35s8y3knwqw22ii0"))
     (package
       (name "emacs-envrc")
-      (version (string-append commit ".20230226"))
+      (version "0.4.20230405")
       (source
        (origin
          (method git-fetch)
@@ -544,8 +545,7 @@ on stdout instead of using a socket as the Emacsclient does.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32
-           "0nqqx4qlw75lmbn0v927sg3xyjkk86ihw1q3rdbbn59va41grds4"))))
+          (base32 hash))))
       (build-system emacs-build-system)
       (arguments
        `(#:phases
