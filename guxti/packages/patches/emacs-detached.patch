@@ -20,7 +20,7 @@ index 7eda4df..f6b1770 100644
 +                (format " (%s)" lastcommand) ""))
 +           (command
 +            (read-shell-command (if shell-command-prompt-show-cwd
-+                                    (format-message "Detached (`%s')%s: "
++                                    (format-message "Detached `%s'%s: "
 +                                                    (abbreviate-file-name
 +                                                     default-directory) history-prompt)
 +                                  (format "Detached%s: " history-prompt)) nil
