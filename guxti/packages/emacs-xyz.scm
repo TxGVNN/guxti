@@ -936,3 +936,27 @@ and movement to a wide range of programming languages.")
 It provides integration with multiple built-in modes, as well as providing an
 interface to attach and interact with the processes.")
     (license license:gpl3+)))
+
+(define-public emacs-org-alert
+  (package
+    (name "emacs-org-alert")
+    (version "0.2.0")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/spegoraro/org-alert.git")
+                    (commit "6d3c0acd66d8626ec2cb353c9da92a214039c7ab")))
+              (sha256
+               (base32
+                "12vy25sf3cz2y2y1s2s3q2c4ykfldvd8zj0vy2adiyda7bzqflgs"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-org emacs-alert))
+    (home-page "https://github.com/spegoraro/org-alert")
+    (synopsis "Notify org deadlines via notify-send")
+    (description
+     "This package provides functions to display system notifications for any org-mode
+deadlines that are due in your agenda.  To perform a one-shot check call
+(org-alert-deadlines).  To enable repeated checking call (org-alert-enable) and
+to disable call (org-alert-disable).  You can set the checking interval by
+changing the org-alert-interval variable to the number of seconds you'd like.")
+    (license license:gpl3+)))
