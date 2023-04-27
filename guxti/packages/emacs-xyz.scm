@@ -15,26 +15,7 @@
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz))
 
-(define-public emacs-project
-  (package
-    (name "emacs-project")
-    (version "0.9.8")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append "https://elpa.gnu.org/packages/project-" version ".tar"))
-       (sha256
-        (base32 "0i1q9blvpj3bygjh98gv0kqn2rm01b8lqp9vra82sy3hzzj39pyx"))))
-    (build-system emacs-build-system)
-    (propagated-inputs (list emacs-xref))
-    (home-page "https://elpa.gnu.org/packages/project.html")
-    (synopsis "Operations on the current project")
-    (description
-     "This library contains generic infrastructure for dealing with projects,
-some utility functions, and commands using that infrastructure.")
-    (license license:gpl3+)))
-
-(define-public emacs-crux
+(define-public emacs-crux-me
   (package
     (name "emacs-crux")
     (version "0.4.0.20230115")
@@ -73,7 +54,7 @@ some utility functions, and commands using that infrastructure.")
      "@code{crux} provides a collection of useful functions for Emacs.")
     (license license:gpl3+)))
 
-(define-public emacs-perspective
+(define-public emacs-perspective-me
   (package
     (name "emacs-perspective")
     (version "2.16.20230114")
@@ -122,117 +103,6 @@ perspective only its buffers are available by default.")
     ;; the Expat license.
     (license license:gpl3+)))
 
-(define-public emacs-magit-todos
-  (package
-    (name "emacs-magit-todos")
-    (version "1.5.3.20230226")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/alphapapa/magit-todos")
-             (commit "c5030cc")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32
-         "0j32zslcbiaq2a6ppyzdq4x59payya5hzd2kpw3mdj0p479byz19"))))
-    (build-system emacs-build-system)
-    (arguments
-     `(#:phases
-       (modify-phases %standard-phases
-         (add-after
-             'unpack 'fix-version
-           (lambda _
-             (substitute*
-                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
-               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n"))))))))
-    (propagated-inputs
-     (list emacs-async
-           emacs-dash
-           emacs-f
-           emacs-hl-todo
-           emacs-magit
-           emacs-pcre2el
-           emacs-s))
-    (home-page "https://github.com/alphapapa/magit-todos")
-    (synopsis "Show source files' TODOs (and FIXMEs, etc) in Magit status buffer")
-    (description "This package displays keyword entries from source code
-comments and Org files in the Magit status buffer.  Activating an item jumps
-to it in its file.  By default, it uses keywords from @code{hl-todo}, minus a
-few (like NOTE).")
-    (license license:gpl3)))
-
-(define-public emacs-elisp-refs
-  (package
-    (name "emacs-elisp-refs")
-    (version "1.4.20230114")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/Wilfred/elisp-refs")
-             (commit "af73739084637c8ebadad337a8fe58ff4f1d2ec1")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0kbx2dxvbidl2fjxw41hhdhk4iicvdf9zwxmgdr2glrf3sv9ncb5"))))
-    (build-system emacs-build-system)
-    (propagated-inputs
-     (list emacs-dash
-           emacs-f
-           emacs-list-utils
-           emacs-loop
-           emacs-s
-           emacs-shut-up))
-    (native-inputs
-     (list emacs-ert-runner emacs-undercover))
-    (arguments
-     `(#:phases
-       (modify-phases %standard-phases
-         (add-after
-             'unpack 'fix-version
-           (lambda _
-             (substitute*
-                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
-               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n"))))))
-       #:tests? #t
-       #:test-command '("ert-runner")))
-    (home-page "https://github.com/Wilfred/elisp-refs")
-    (synopsis "Find callers of elisp functions or macros")
-    (description "@code{elisp-refs} finds references to functions, macros or
-variables.  Unlike a dumb text search, it actually parses the code, so it's
-never confused by comments or @code{foo-bar} matching @code{foo}.")
-    (license license:gpl3+)))
-
-
-(define-public emacs-helpful
-  (package
-    (name "emacs-helpful")
-    (version "0.19.20230117")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/Wilfred/helpful")
-             (commit "94c2533")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "09da3d3kx4c8im58kwfv59zpwda70yvwnjk01w7r6lra1ww8d3yx"))))
-    (build-system emacs-build-system)
-    (propagated-inputs
-     (list emacs-elisp-refs emacs-dash emacs-s emacs-f emacs-shut-up))
-    (native-inputs
-     (list emacs-ert-runner emacs-undercover))
-    (arguments
-     `(#:tests? #t
-       #:test-command '("ert-runner")))
-    (home-page "https://github.com/Wilfred/helpful")
-    (synopsis "More contextual information in Emacs help")
-    (description "@code{helpful} is an alternative to the built-in Emacs help
-that provides much more contextual information.")
-    (license license:gpl3+)))
-
 (define-public emacs-elpa-mirror
   (let ((version "2.2.2.20230318")
         (commit "9d7cfbf72ef8c7cd014c91e5bb3d8fbebda56140")
@@ -267,11 +137,11 @@ that provides much more contextual information.")
 installed packages.")
       (license license:gpl3+))))
 
-(define-public emacs-consult
-  (let ((commit "0.31"))
+(define-public emacs-consult-me
+  (let ((commit "0.34"))
     (package
       (name "emacs-consult")
-      (version "0.31.20230224")
+      (version "0.34.20230427")
       (source
        (origin
          (method git-fetch)
@@ -279,10 +149,9 @@ installed packages.")
                (url "https://github.com/minad/consult")
                (commit commit)))
          (sha256
-          (base32 "0ckyn4sdhc9dykbbdiin75jxza883dqa3g4mvf8qgsnzlqcjvvg6"))
+          (base32 "1ggbvc5ylsw430w05fjl4vk1hmim45mwah7cyr94g03rwjhng1sc"))
          (file-name (git-file-name name version))
-         (patches (list (local-file
-                         "patches/emacs-consult.patch")))))
+         ))
       (build-system emacs-build-system)
       (propagated-inputs (list emacs-compat))
       (arguments
@@ -302,11 +171,11 @@ Emacs completion function completing-read, which allows quickly selecting from a
 list of candidates.")
       (license license:gpl3+))))
 
-(define-public emacs-embark
-  (let ((commit "63013c2d3ef4dccc95167218ccbf4f401e489c3e")) ;version bump
+(define-public emacs-embark-me
+  (let ((commit "c914efe881df2bc6a2bd35cc7ee975d3e9d4a418")) ;version bump
     (package
       (name "emacs-embark")
-      (version "0.21.1.20230225")
+      (version "0.22.1.20230427")
       (source
        (origin
          (method git-fetch)
@@ -314,11 +183,11 @@ list of candidates.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "14qp46wa1xgmb09jyk9cadj0b3m7bwspqnprk3zbfc6gw1r53235"))
+          (base32 "1l288w27wav0r71hprqi74r77042d1fx3p1zmi05vl6z6230h48b"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-avy emacs-consult))
+       (list emacs-avy emacs-consult-me))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -342,10 +211,10 @@ the context.")
       (license license:gpl3+))))
 
 (define-public emacs-embark-consult
-  (let ((commit "63013c2d3ef4dccc95167218ccbf4f401e489c3e")) ;version bump
+  (let ((commit "c914efe881df2bc6a2bd35cc7ee975d3e9d4a418")) ;version bump
     (package
       (name "emacs-embark-consult")
-      (version "0.21.1")
+      (version "0.22.1")
       (source
        (origin
          (method git-fetch)
@@ -353,11 +222,11 @@ the context.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "14qp46wa1xgmb09jyk9cadj0b3m7bwspqnprk3zbfc6gw1r53235"))
+          (base32 "1l288w27wav0r71hprqi74r77042d1fx3p1zmi05vl6z6230h48b"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-consult emacs-embark))
+       (list emacs-consult-me emacs-embark-me))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -373,7 +242,7 @@ the context.")
 will be loaded automatically by Embark.")
       (license license:gpl3+))))
 
-(define-public emacs-consult-yasnippet
+(define-public emacs-consult-yasnippet-me
   (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
         (revision "20230226"))
     (package
@@ -389,7 +258,7 @@ will be loaded automatically by Embark.")
          (sha256
           (base32 "13hmmsnmh32vafws61sckzzy354rq0nslqpyzhw97iwvn0fpsa35"))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult emacs-yasnippet))
+      (propagated-inputs (list emacs-consult-me emacs-yasnippet))
       (home-page "https://github.com/mohkale/consult-yasnippet")
       (synopsis "Consulting-read interface for Yasnippet")
       (description
@@ -398,7 +267,7 @@ a completing-read interface.  It supports previewing the current snippet
 expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
 
-(define-public emacs-yasnippet-snippets
+(define-public emacs-yasnippet-snippets-me
   (let ((commit "e360d047")
         (hash "0v5qv6czlw4k0cc6aqwrqv11prm7xr7arsis3fjm7arms7939din"))
     (package
@@ -435,388 +304,6 @@ expansion and overwriting the marked region with a new snippet completion.")
 snippets.  When this package is installed, the extra snippets it provides are
 automatically made available to YASnippet.")
       (license license:gpl3+))))
-
-(define-public emacs-transient
-  (let ((commit "0ae0de4"))
-    (package
-      (name "emacs-transient")
-      (version "0.3.7.20230326")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/magit/transient")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "01b60pj8k3vwvs2xsx5md2myz0l1dj1myh9jrdyaiyhcaacvlbq8"))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:tests? #f                      ;no test suite
-         #:phases
-         (modify-phases %standard-phases
-           (add-after 'unpack 'build-info-manual
-             (lambda _
-               (invoke "make" "info")
-               ;; Move the info file to lisp so that it gets installed by the
-               ;; emacs-build-system.
-               (rename-file "docs/transient.info" "lisp/transient.info")))
-           (add-after 'build-info-manual 'enter-lisp-directory
-             (lambda _
-               (chdir "lisp")))
-           (add-after 'enter-lisp-directory 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Package-Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n"))))))))
-      (native-inputs
-       (list texinfo))
-      (propagated-inputs
-       (list emacs-dash emacs-compat))
-      (home-page "https://magit.vc/manual/transient")
-      (synopsis "Transient commands in Emacs")
-      (description "Taking inspiration from prefix keys and prefix arguments
-in Emacs, Transient implements a similar abstraction involving a prefix
-command, infix arguments and suffix commands.  We could call this abstraction
-a \"transient command\", but because it always involves at least two
-commands (a prefix and a suffix) we prefer to call it just a \"transient\".")
-      (license license:gpl3+))))
-
-
-(define-public emacs-with-editor
-  (let ((commit "v3.2.0"))
-    (package
-      (name "emacs-with-editor")
-      (version "3.2.0.20230226")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/magit/with-editor")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "1d98hagpm6h5vgx80qlh3zrfcb6z000rfc707w9zzmh634dkg3xx"))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:phases
-         (modify-phases %standard-phases
-           (add-after 'unpack 'enter-lisp-directory
-             (lambda _
-               (chdir "lisp")))
-           (add-after 'enter-lisp-directory 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Package-Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n")))))
-           (add-before 'install 'make-info
-             (lambda _
-               (with-directory-excursion "../docs"
-                 (invoke "makeinfo" "--no-split"
-                         "-o" "with-editor.info" "with-editor.texi")
-                 (install-file "with-editor.info" "../lisp")))))))
-      (native-inputs
-       (list texinfo))
-      (propagated-inputs
-       (list emacs-async))
-      (home-page "https://github.com/magit/with-editor")
-      (synopsis "Emacs library for using Emacsclient as EDITOR")
-      (description
-       "This package provides an Emacs library to use the Emacsclient as
-@code{$EDITOR} of child processes, making sure they know how to call home.
-For remote processes a substitute is provided, which communicates with Emacs
-on stdout instead of using a socket as the Emacsclient does.")
-      (license license:gpl3+))))
-
-
-(define-public emacs-envrc
-  (let ((commit "1954e8c")
-        (hash "0vjk8k5k9xsngk50nf611c4j0bikqn9l1y3m35s8y3knwqw22ii0"))
-    (package
-      (name "emacs-envrc")
-      (version "0.4.20230405")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/purcell/envrc")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 hash))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:phases
-         (modify-phases %standard-phases
-           (add-after
-               'unpack 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Package-Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n"))))))))
-      (propagated-inputs
-       (list emacs-inheritenv))
-      (home-page "https://github.com/purcell/envrc")
-      (synopsis "Support for Direnv which operates buffer-locally")
-      (description
-       "This is library which uses Direnv to set environment variables on
-a per-buffer basis.  This means that when you work across multiple projects
-which have @file{.envrc} files, all processes launched from the buffers ``in''
-those projects will be executed with the environment variables specified in
-those files.  This allows different versions of linters and other tools to be
-used in each project if desired.")
-      (license license:gpl3+))))
-
-(define-public emacs-closql
-  (let ((commit "v1.2.1"))
-    (package
-      (name "emacs-closql")
-      (version "1.2.1.20230226")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/emacscollective/closql")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32
-           "1s9riibws28xjn2bjn9qz3m2gvcmrn18b7g5y6am4sy7rgkx3nwx"))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:phases
-         (modify-phases %standard-phases
-           (add-after
-               'unpack 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Keywords: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n;; Keywords: extensions\n"))))))))
-      (propagated-inputs
-       (list emacs-emacsql))
-      (home-page "https://github.com/emacscollective/closql")
-      (synopsis "Store EIEIO objects using EmacSQL")
-      (description
-       "This package stores uniform EIEIO objects in an EmacSQL
-database.  SQLite is used as backend.  This library imposes some restrictions
-on what kind of objects can be stored; it isn't intended to store arbitrary
-objects.  All objects have to share a common superclass and subclasses cannot
-add any additional instance slots.")
-      (license license:gpl3))))
-
-(define-public emacs-emacsql
-  (let ((commit "e1baaf2f874df7f9259a8ecca978e03d3ddae5b5")
-        (revision "20230226"))
-    (package
-      (name "emacs-emacsql")
-      (version (string-append "3.1.1" revision))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/magit/emacsql")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "0dvqs1jg5zqn0i3r67sn1a40h5rm961q9vxvmqxbgvdhkjvip8fn"))))
-      (build-system emacs-build-system)
-      (arguments
-       (list
-        #:tests? #true
-        #:test-command #~(list "emacs" "-Q" "--batch"
-                               "-L" "tests"
-                               "-L" "."
-                               "-l" "tests/emacsql-tests.el"
-                               "-f" "ert-run-tests-batch-and-exit")
-        #:modules '((guix build emacs-build-system)
-                    (guix build utils)
-                    (guix build emacs-utils)
-                    (srfi srfi-26))
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-after 'unpack 'fix-version
-              (lambda _
-                (substitute*
-                    (string-append (string-drop #$name (string-length "emacs-")) ".el")
-                  (("^;; Package-Version: ([^/[:blank:]\r\n]*)(.*)$")
-                   (string-append ";; Version: " #$version "\n")))))
-            (add-before 'install 'remove-sqlite-builtin
-              ;; Current emacs 28.2 doesn't have sqlite feature and compilation
-              ;; of this file fails.  This phase should be removed, when emacs
-              ;; package is updated to 29.
-              (lambda _
-                (delete-file "emacsql-sqlite-builtin.el")))
-            (add-before 'install 'patch-elisp-shell-shebangs
-              (lambda _
-                (substitute* (find-files "." "\\.el")
-                  (("/bin/sh") (which "sh")))))
-            (add-after 'patch-elisp-shell-shebangs 'setenv-shell
-              (lambda _
-                (setenv "SHELL" "sh")))
-            (add-after 'setenv-shell 'build-emacsql-sqlite
-              (lambda _
-                (invoke "make" "binary" (string-append "CC=" #$(cc-for-target)))))
-            (add-after 'build-emacsql-sqlite 'install-emacsql-sqlite
-              ;; This build phase installs emacs-emacsql binary.
-              (lambda _
-                (install-file "sqlite/emacsql-sqlite"
-                              (string-append #$output "/bin"))))
-            (add-after 'install-emacsql-sqlite 'patch-emacsql-sqlite.el
-              ;; This build phase removes interactive prompts
-              ;; and makes sure Emacs look for binaries in the right places.
-              (lambda _
-                (emacs-substitute-variables "emacsql-sqlite.el"
-                  ("emacsql-sqlite-executable"
-                   (string-append #$output "/bin/emacsql-sqlite"))
-                  ;; Make sure Emacs looks for ‘GCC’ binary in the right place.
-                  ("emacsql-sqlite-c-compilers"
-                   `(list ,(which "gcc")))))))))
-      (inputs
-       (list emacs-minimal `(,mariadb "dev") `(,mariadb "lib") postgresql))
-      (propagated-inputs
-       (list emacs-finalize emacs-pg emacs-sqlite3-api))
-      (home-page "https://github.com/magit/emacsql")
-      (synopsis "Emacs high-level SQL database front-end")
-      (description "Any readable Lisp value can be stored as a value in EmacSQL,
-including numbers, strings, symbols, lists, vectors, and closures.  EmacSQL
-has no concept of @code{TEXT} values; it's all just Lisp objects.  The Lisp
-object @code{nil} corresponds 1:1 with @code{NULL} in the database.")
-      (license license:gpl3+))))
-
-(define-public emacs-magit
-  (let ((commit "2c91c080a8e2f35e3b036a2f6b8011fa897d23a1")
-        (revision "20230226"))
-    (package
-      (name "emacs-magit")
-      (version (string-append "3.3.0." revision))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/magit/magit")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "00ibnr76nfyf4fff3ga324d7dbqnsb4crlxgr94npiy8rsclaszp"))))
-      (build-system emacs-build-system)
-      (arguments
-       (list
-        #:tests? #t
-        #:test-command #~(list "make" "test")
-        #:exclude #~(cons* "magit-libgit.el"
-                           "magit-libgit-pkg.el"
-                           %default-exclude)
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-after 'unpack 'build-info-manual
-              (lambda _
-                (invoke "make" "info")
-                ;; Copy info files to the lisp directory, which acts as
-                ;; the root of the project for the emacs-build-system.
-                (for-each (lambda (f)
-                            (install-file f "lisp"))
-                          (find-files "docs" "\\.info$"))))
-            (add-after 'build-info-manual 'set-magit-version
-              (lambda _
-                (make-file-writable "lisp/magit.el")
-                (emacs-substitute-variables "lisp/magit.el"
-                  ("magit-version" #$version))))
-            (add-after 'set-magit-version 'patch-exec-paths
-              (lambda* (#:key inputs #:allow-other-keys)
-                (for-each make-file-writable
-                          (list "lisp/magit-git.el" "lisp/magit-sequence.el"))
-                (emacs-substitute-variables "lisp/magit-git.el"
-                  ("magit-git-executable"
-                   (search-input-file inputs "/bin/git")))
-                (emacs-substitute-variables "lisp/magit-sequence.el"
-                  ("magit-perl-executable"
-                   (search-input-file inputs "/bin/perl")))))
-            (add-before 'check 'configure-git
-              (lambda _
-                ;; Otherwise some tests fail with error "unable to auto-detect
-                ;; email address".
-                (setenv "HOME" (getcwd))
-                (invoke "git" "config" "--global" "user.name" "toto")
-                (invoke "git" "config" "--global" "user.email"
-                        "toto@toto.com")))
-            (replace 'expand-load-path
-              (lambda args
-                (with-directory-excursion "lisp"
-                  (apply (assoc-ref %standard-phases 'expand-load-path) args))))
-            (replace 'install
-              (lambda args
-                (with-directory-excursion "lisp"
-                  (apply (assoc-ref %standard-phases 'install) args)))))))
-      (native-inputs
-       (list texinfo))
-      (inputs
-       (list git perl))
-      (propagated-inputs
-       (list emacs-dash emacs-with-editor emacs-compat))
-      (home-page "https://magit.vc/")
-      (synopsis "Emacs interface for the Git version control system")
-      (description
-       "With Magit, you can inspect and modify your Git repositories
-with Emacs.  You can review and commit the changes you have made to
-the tracked files, for example, and you can browse the history of past
-changes.  There is support for cherry picking, reverting, merging,
-rebasing, and other common Git operations.")
-      (license license:gpl3+))))
-
-(define-public emacs-forge
-  (package
-    (name "emacs-forge")
-    (version "0.3.2.20230226")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/magit/forge")
-             (commit "v0.3.2")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0p1jlq169hpalhzmjm3h4q3x5xr9kdmz0qig8jwfvisyqay5vbih"))))
-    (build-system emacs-build-system)
-    (arguments
-     `(#:tests? #f                     ;no tests
-       #:phases
-       (modify-phases %standard-phases
-         (add-after 'unpack 'build-info-manual
-           (lambda _
-             (invoke "make" "info")
-             ;; Move the info file to lisp so that it gets installed by the
-             ;; emacs-build-system.
-             (rename-file "docs/forge.info" "lisp/forge.info")))
-         (add-after 'build-info-manual 'chdir-lisp
-           (lambda _
-             (chdir "lisp")))
-
-         (add-after 'chdir-lisp 'fix-version
-           (lambda _
-             (substitute*
-                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
-               (("^;; Keywords: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n;; Keywords: git tools vc\n"))))))))
-    (native-inputs
-     (list texinfo))
-    (propagated-inputs
-     (list emacs-closql
-           emacs-dash
-           emacs-emacsql
-           emacs-ghub
-           emacs-let-alist
-           emacs-magit
-           emacs-markdown-mode
-           emacs-yaml))
-    (home-page "https://github.com/magit/forge/")
-    (synopsis "Access Git forges from Magit")
-    (description "Work with Git forges, such as Github and Gitlab, from the
-comfort of Magit and the rest of Emacs.")
-    (license license:gpl3+)))
 
 (define-public emacs-eev
   (package
@@ -865,8 +352,8 @@ and movement to a wide range of programming languages.")
       (license license:gpl3+))))
 
 (define-public emacs-project-tasks
-  (let ((commit "b88e807")
-        (hash "056pi7pmc8h1r48ll3h6ifds536ap1xah8bcgaqy4km3qqr57haw"))
+  (let ((commit "3e2de52")
+        (hash "0mpyblrwmxzgcz3dpshikd948vnjiqd658yx6fq76i1vcmi1bb7v"))
     (package
       (name "emacs-project-tasks")
       (version "0.2.0")
@@ -886,7 +373,7 @@ and movement to a wide range of programming languages.")
  I will call it is Tasks As Code.")
       (license license:gpl3+))))
 
-(define-public emacs-detached
+(define-public emacs-detached-me
   (package
     (name "emacs-detached")
     (version "0.10.1.20230406")

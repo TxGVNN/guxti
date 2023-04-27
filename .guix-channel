@@ -5,4 +5,4 @@
    (name guix)
    (url "https://git.savannah.gnu.org/git/guix.git")
    (branch "master")
-   (commit "5d10644371abd54d0edcd638691113f0a92de743"))))
+   (commit "5bfce83dc4cddfdbb9f4bef06a26dbfe525c2838"))))
