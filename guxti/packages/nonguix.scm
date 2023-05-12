@@ -46,7 +46,7 @@ you are already working with git and your code..")
     (build-system copy-build-system)
     (arguments
      '(#:install-plan
-       '(("kubectl" "bin/kubeclt"))
+       '(("kubectl" "bin/kubectl"))
        #:phases
        (modify-phases %standard-phases
                       (add-after
