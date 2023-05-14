@@ -1,3 +1,48 @@
+diff --git a/detached-list.el b/detached-list.el
+index 66ceafd..daed53e 100644
+--- a/detached-list.el
++++ b/detached-list.el
+@@ -859,6 +859,28 @@ If prefix-argument is provided unmark instead of mark."
+                   (member (symbol-name (detached-session-id it)) session-ids))
+                 sessions)))
+ 
++(defun detached-tail-session (session)
++  "Tail -f SESSION log."
++  (interactive
++   (list (detached-session-in-context)))
++  (when (detached-valid-session session)
++    (let* ((id (detached-session-id session))
++           (buffer-name (format "*detached-tail:%s*" id))
++           (file-path
++            (detached--session-file session 'log))
++           (tramp-verbose 1))
++      (if (file-exists-p file-path)
++          (progn
++            (async-shell-command (format "tail -f %s" file-path) buffer-name))
++        (message "Detached can't find file: %s" file-path)))))
++
++(defun detached-jump-to-dired-directory (session)
++  "Jump to the directory where SESSION is run."
++  (interactive
++   (list (detached-session-in-context)))
++  (when (detached-valid-session session)
++    (dired (detached--working-dir-str session))))
++
+ ;;;; Major mode
+ 
+ (defvar detached-list-mode-map
+@@ -869,9 +891,10 @@ If prefix-argument is provided unmark instead of mark."
+     (define-key map (kbd "f") #'detached-list-select-filter)
+     (define-key map (kbd "g") #'detached-list-revert)
+     (define-key map (kbd "i") #'detached-list-initialize-session-directory)
+-    (define-key map (kbd "j") #'imenu)
+     (define-key map (kbd "k") #'detached-list-kill-session)
+     (define-key map (kbd "m") #'detached-list-mark-session)
++    (define-key map (kbd "l") #'detached-tail-session)
++    (define-key map (kbd "j") #'detached-jump-to-dired-directory)
+     ;; Narrow
+     (define-key map (kbd "n a") #'detached-list-narrow-annotation)
+     (define-key map (kbd "n c") #'detached-list-narrow-command)
 diff --git a/detached.el b/detached.el
 index 7eda4df..f6b1770 100644
 --- a/detached.el
