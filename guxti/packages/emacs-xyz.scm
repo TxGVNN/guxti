@@ -268,11 +268,11 @@ expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
 
 (define-public emacs-yasnippet-snippets-me
-  (let ((commit "e360d047")
-        (hash "0v5qv6czlw4k0cc6aqwrqv11prm7xr7arsis3fjm7arms7939din"))
+  (let ((commit "d08cf777")
+        (hash "007rvdxjb678jwhc50ds9hdaaa4vxjjrnwm0l7w3gxins5y8y03c"))
     (package
       (name "emacs-yasnippet-snippets")
-      (version "1.0.20230331")
+      (version "1.0.20230714")
       (source
        (origin
          (method git-fetch)
