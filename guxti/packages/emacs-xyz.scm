@@ -456,3 +456,50 @@ deadlines that are due in your agenda.  To perform a one-shot check call
 to disable call (org-alert-disable).  You can set the checking interval by
 changing the org-alert-interval variable to the number of seconds you'd like.")
     (license license:gpl3+)))
+
+(define-public emacs-corfu-terminal-next
+  (package
+    (name "emacs-corfu-terminal")
+    (version "0.6")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://codeberg.org/akib/emacs-corfu-terminal")
+         (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0f9zd4q9w5bkli7nbpdkmhglhvafisglhhqb7wfvghpp9gbcafkp"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-corfu emacs-popon-next))
+    (home-page "https://codeberg.org/akib/emacs-corfu-terminal/")
+    (synopsis "Replace corfu child frames with popups")
+    (description
+     "This package replaces the child frames @code{emacs-corfu} uses
+with popups, which also work in the terminal.")
+    (license license:gpl3+)))
+
+(define-public emacs-popon-next
+  (package
+    (name "emacs-popon")
+    (version "0.13")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://codeberg.org/akib/emacs-popon")
+         (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "046l8is3rg0c6qhiy7wh91pcdhwqhnw47md8q231w8mxnw5b1n5j"))))
+    (build-system emacs-build-system)
+    (home-page "https://codeberg.org/akib/emacs-popon/")
+    (synopsis "Pop floating text on a window")
+    (description
+     "@code{emacs-popon} allows you to pop text on a window, what we call
+a popon.  Popons are window-local and sticky, they don't move while
+scrolling, and they even don't go away when switching buffer, but you
+can bind a popon to a specific buffer to only show on that buffer.")
+    (license license:gpl3+)))
