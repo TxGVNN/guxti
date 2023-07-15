@@ -457,6 +457,27 @@ to disable call (org-alert-disable).  You can set the checking interval by
 changing the org-alert-interval variable to the number of seconds you'd like.")
     (license license:gpl3+)))
 
+(define-public emacs-ob-compile
+  (package
+    (name "emacs-ob-compile")
+    (version "0.2")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/TxGVNN/ob-compile.git")
+                    (commit "9a16b3dd0f467c091e91944b90a2ca3d646d6617")))
+              (sha256 (base32
+                       "0ajs108ib4g57sik31m81hw6ln11gcyrx96x4f1d6hx73c8i8nk7"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/TxGVNN/ob-compile")
+    (synopsis "Run compile by org-babel")
+    (description
+     "Run compile in org-mode.  Example: #+begin_src compile :name uname :output
+(format \"compile-%s\" (format-time-string \"%y%m%d-%H%M%S\")) uname -a #+end_src To
+enable saving the output, you have to config: (add-hook
+compilation-finish-functions #'ob-compile-save-file)")
+    (license license:gpl3+)))
+
 (define-public emacs-corfu-terminal-next
   (package
     (name "emacs-corfu-terminal")
