@@ -524,3 +524,25 @@ a popon.  Popons are window-local and sticky, they don't move while
 scrolling, and they even don't go away when switching buffer, but you
 can bind a popon to a specific buffer to only show on that buffer.")
     (license license:gpl3+)))
+
+(define-public emacs-isearch-mb
+  (package
+    (name "emacs-isearch-mb")
+    (version "0.7")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "https://elpa.gnu.org/packages/isearch-mb-"
+                                  version ".tar"))
+              (sha256 (base32
+                       "1dfjh4ya9515vx0q2dv1brddw350gxd40h1g1vsa783ivvm0hm75"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/astoff/isearch-mb")
+    (synopsis "Control isearch from the minibuffer")
+    (description
+     "ISEARCH-MB — CONTROL ISEARCH FROM THE MINIBUFFER
+This Emacs package provides an alternative isearch UI based on the minibuffer.
+This allows editing the search string in arbitrary ways without any special
+maneuver; unlike standard isearch, cursor motion commands do not end the search.
+ Moreover, the search status information in the echo area and some keybindings
+are slightly simplified.")
+    (license license:gpl3+)))
