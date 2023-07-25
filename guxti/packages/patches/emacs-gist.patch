@@ -1,0 +1,17 @@
+diff -u a/gist.el b/gist.el
+--- a/gist.el
++++ b/gist.el
+@@ -745,7 +745,10 @@
+         (gh-url-add-response-callback
+          resp
+          (lambda (gist)
+-           (set-buffer-modified-p nil)
++           ;; if this buffer is belong to a file, let save it too
++           (if (buffer-file-name)
++               (save-buffer)
++             (set-buffer-modified-p nil))
+            (when new-name
+              (rename-buffer (replace-regexp-in-string "/.*$"
+                                                       (concat "/" new-name)
+
+Diff finished.  Tue Jul 25 22:13:52 2023

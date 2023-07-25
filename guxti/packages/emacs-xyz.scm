@@ -550,14 +550,31 @@ are slightly simplified.")
 (define-public emacs-gist
   (package
     (name "emacs-gist")
-    (version "1.4.0")
+    (version "1.4.1")
     (source (origin
               (method git-fetch)
               (uri (git-reference
                     (url "https://github.com/defunkt/gist.el.git")
                     (commit "314fe6ab80fae35b95f0734eceb82f72813b6f41")))
               (sha256 (base32
-                       "0vbyzww9qmsvdpdc6d6wq6drlq1r9y92807fjhs0frgzmq6dg0rh"))))
+                       "0vbyzww9qmsvdpdc6d6wq6drlq1r9y92807fjhs0frgzmq6dg0rh"))
+              (patches
+               (parameterize
+                   ((%patch-path
+                     (map (lambda (directory)
+                            (string-append directory "/guxti/packages/patches"))
+                          %load-path)))
+                 (search-patches "emacs-gist.patch")))))
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-gh))
     (home-page "https://github.com/defunkt/gist.el")
@@ -569,7 +586,7 @@ are slightly simplified.")
 (define-public emacs-gh
   (package
     (name "emacs-gh")
-    (version "20221204.1817")
+    (version "1.0.1")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -577,6 +594,16 @@ are slightly simplified.")
                     (commit "e1423a54fc97924e75d1fde27911c3c678a7d6c3")))
               (sha256 (base32
                        "1fr4pikcjasqy41g86pjwhz3alky42m2z7ziag051xhcd8nlm51s"))))
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-pcache emacs-logito emacs-marshal))
     (home-page "https://github.com/sigma/gh.el")
