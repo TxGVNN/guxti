@@ -546,3 +546,97 @@ maneuver; unlike standard isearch, cursor motion commands do not end the search.
  Moreover, the search status information in the echo area and some keybindings
 are slightly simplified.")
     (license license:gpl3+)))
+
+(define-public emacs-gist
+  (package
+    (name "emacs-gist")
+    (version "1.4.0")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/defunkt/gist.el.git")
+                    (commit "314fe6ab80fae35b95f0734eceb82f72813b6f41")))
+              (sha256 (base32
+                       "0vbyzww9qmsvdpdc6d6wq6drlq1r9y92807fjhs0frgzmq6dg0rh"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-gh))
+    (home-page "https://github.com/defunkt/gist.el")
+    (synopsis "Emacs integration for gist.github.com")
+    (description
+     "An Emacs interface for managing gists (http://gist.github.com).")
+    (license #f)))
+
+(define-public emacs-gh
+  (package
+    (name "emacs-gh")
+    (version "20221204.1817")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/sigma/gh.el.git")
+                    (commit "e1423a54fc97924e75d1fde27911c3c678a7d6c3")))
+              (sha256 (base32
+                       "1fr4pikcjasqy41g86pjwhz3alky42m2z7ziag051xhcd8nlm51s"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-pcache emacs-logito emacs-marshal))
+    (home-page "https://github.com/sigma/gh.el")
+    (synopsis "A GitHub library for Emacs")
+    (description "")
+    (license #f)))
+
+(define-public emacs-pcache
+  (package
+    (name "emacs-pcache")
+    (version "0.5.1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/sigma/pcache.git")
+                    (commit "507230d094cc4a5025fe09b62569ad60c71c4226")))
+              (sha256 (base32
+                       "1fjdn4g9ww70f3x6vbzi3gqs9dsmqg16isajlqlflzw2716zf2nh"))))
+    (build-system emacs-build-system)
+    (home-page "unspecified")
+    (synopsis "persistent caching for Emacs.")
+    (description
+     "pcache provides a persistent way of caching data, in a hashtable-like structure.
+ It relies on `eieio-persistent in the backend, so that any object that can be
+serialized by EIEIO can be stored with pcache.")
+    (license #f)))
+
+(define-public emacs-logito
+  (package
+    (name "emacs-logito")
+    (version "0.1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/sigma/logito.git")
+                    (commit "d5934ce10ba3a70d3fcfb94d742ce3b9136ce124")))
+              (sha256 (base32
+                       "0bnkc6smvaq37q08q1wbrxw9mlcfbrax304fxw4fx7pc1587av0d"))))
+    (build-system emacs-build-system)
+    (home-page "unspecified")
+    (synopsis "logging library for Emacs")
+    (description "This module provides logging facility for Emacs")
+    (license #f)))
+
+(define-public emacs-marshal
+  (package
+    (name "emacs-marshal")
+    (version "0.9.1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/sigma/marshal.el.git")
+                    (commit "bc00044d9073482f589aad959e34d563598f682a")))
+              (sha256 (base32
+                       "0v5ncg88bghn4rpqw6fnvxpd0276mwn2bh6fpch7s1ibpaj2bsp0"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-ht))
+    (home-page "https://github.com/sigma/marshal.el")
+    (synopsis "eieio extension for automatic (un)marshalling")
+    (description
+     "Inspired by Go tagged structs.  alist, plist and json drivers are provided, but
+implementing others just requires to inherit from `marshal-driver'.")
+    (license #f)))
