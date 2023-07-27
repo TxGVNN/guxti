@@ -337,11 +337,11 @@ by step and in any order.  We call these \"executable logs\" _e-scripts_.")
     (license license:gpl3+)))
 
 (define-public emacs-combobulate
-  (let ((commit "6c36a85")
-        (hash "090sxd7pfq95pfylbsi6kwb82pz2rs1ny2gwq3m3m7xlhm2ar4n7"))
+  (let ((commit "582f896")
+        (hash "18g0djh9dm4br602p522c8bsjspqd1dmk97via5lf8iv39531m2n"))
     (package
       (name "emacs-combobulate")
-      (version "0.1.20230318")
+      (version "0.1.20230619")
       (source
        (origin
          (method git-fetch)
