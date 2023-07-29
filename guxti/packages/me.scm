@@ -8,9 +8,9 @@
 
 
 (define-public oops
-  (let ((commit "d8b4cde89bd8f4059bb61a052c849f876979a240")
-        (hash "0y1j0n7ji0skzrrpj6h6j63rlhgb8xv8q4h3zqlj3v73xm8xindm")
-        (version "20230728.1255"))
+  (let ((commit "1644eb48be04e1648db776fe74511011acc6dad3")
+        (hash "03rjn5xcg7gcknkqnm9ipshhawwnzbbnjbvch46a42yk301phjln")
+        (version "20230729.0747"))
     (package
       (name "oops")
       (version version)
