@@ -361,11 +361,11 @@ and movement to a wide range of programming languages.")
       (license license:gpl3+))))
 
 (define-public emacs-project-tasks
-  (let ((commit "3e2de52")
-        (hash "0mpyblrwmxzgcz3dpshikd948vnjiqd658yx6fq76i1vcmi1bb7v"))
+  (let ((commit "0c2ad9d7b6e01cf17ae1bc456daaf592a36447cd")
+        (hash "0s7iqm0q6kp2l3zlkrz5w56sn3qn21iafpwgyy07jxdls3nrfnk9"))
     (package
       (name "emacs-project-tasks")
-      (version "0.2.0")
+      (version "0.4.0")
       (source
        (origin
          (method git-fetch)
@@ -375,7 +375,6 @@ and movement to a wide range of programming languages.")
          (file-name (git-file-name name version))
          (sha256 (base32 hash))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-project))
       (home-page "https://github.com/TxGVNN/project-tasks")
       (synopsis "Efficient task management for your project.")
       (description "Manage your tasks in a project by using org file and code blocks.
