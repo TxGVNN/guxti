@@ -8,9 +8,9 @@
 
 
 (define-public oops
-  (let ((commit "1644eb48be04e1648db776fe74511011acc6dad3")
-        (hash "03rjn5xcg7gcknkqnm9ipshhawwnzbbnjbvch46a42yk301phjln")
-        (version "20230729.0747"))
+  (let ((commit "bb5ea4a60238dfc251746afa109ff90c191ad2c2")
+        (hash "03xn5npxdayh6riy2qnnjkg7ih1qp0vgrgq1d6rjnhi6d3xlkyxs")
+        (version "20230731.0803"))
     (package
       (name "oops")
       (version version)
@@ -28,6 +28,6 @@
          '(("profile/etc" "etc")
            ("profile/bin" "bin"))))
       (home-page "https://github.com/TxGVNN/oops")
-      (synopsis "TxGVNN's emacs config")
-      (description "TxGVNN's emacs config")
+      (synopsis "TxGVNN's dotfiles")
+      (description "TxGVNN's dotfiles")
       (license license:gpl3+))))
