@@ -549,7 +549,7 @@ are slightly simplified.")
 (define-public emacs-gist
   (package
     (name "emacs-gist")
-    (version "1.4.1")
+    (version "1.4.2")
     (source (origin
               (method git-fetch)
               (uri (git-reference

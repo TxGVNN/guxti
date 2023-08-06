@@ -13,5 +13,36 @@ diff -u a/gist.el b/gist.el
             (when new-name
               (rename-buffer (replace-regexp-in-string "/.*$"
                                                        (concat "/" new-name)
+@@ -763,6 +766,30 @@
+   (let ((new-name (read-from-minibuffer "File name: " gist-filename)))
+     (gist-mode-edit-buffer new-name)))
+ 
++(defun gist-mode-pull()
++  "Update current buffer from gist base on `gist-id' and `gist-filename'."
++  (interactive)
++  (let* ((id gist-id)
++         (gist (gist-list-db-get-gist id)))
++    (when (or (null gist-id) (null gist-filename))
++      (error "gist-id and gist-filename must be set"))
++    (let ((api (gist-get-api t)))
++      (cond ((null gist)
++             ;; fetch it
++             (setq gist (oref (gh-gist-get api id) :data))
++             (puthash (oref gist :id) gist gist-list-db)
++             (let* ((user (oref gist :user))
++                    (gists (push gist (gethash user gist-list-db-by-user))))
++               (puthash user gists gist-list-db-by-user)))
++            (t (gh-gist-get api gist))))
++    (let ((files (oref gist :files)))
++      (dolist (f files)
++        (when (equal (oref f :filename) gist-filename)
++          (with-current-buffer (current-buffer)
++            (delete-region (point-min) (point-max))
++            (insert (oref f :content))
++            (set-buffer-modified-p nil)))))))
++
+ (defvar gist-mode-map
+   (let ((map (make-sparse-keymap)))
+     (define-key map [remap save-buffer] 'gist-mode-save-buffer)
 
-Diff finished.  Tue Jul 25 22:13:52 2023
+Diff finished.  Sun Aug  6 15:41:09 2023
