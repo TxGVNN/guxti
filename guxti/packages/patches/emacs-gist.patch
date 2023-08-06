@@ -13,16 +13,18 @@ diff -u a/gist.el b/gist.el
             (when new-name
               (rename-buffer (replace-regexp-in-string "/.*$"
                                                        (concat "/" new-name)
-@@ -763,6 +766,30 @@
+@@ -763,6 +766,33 @@
    (let ((new-name (read-from-minibuffer "File name: " gist-filename)))
      (gist-mode-edit-buffer new-name)))
  
-+(defun gist-mode-pull()
-+  "Update current buffer from gist base on `gist-id' and `gist-filename'."
++(defun gist-pull(&optional id filename buffer)
++  "Update BUFFER from gist base on ID and FILENAME.
++BUFFER is default to current buffer if not specified."
 +  (interactive)
-+  (let* ((id gist-id)
++  (let* ((id (or id gist-id))
++         (filename (or filename gist-filename))
 +         (gist (gist-list-db-get-gist id)))
-+    (when (or (null gist-id) (null gist-filename))
++    (when (or (null id) (null filename))
 +      (error "gist-id and gist-filename must be set"))
 +    (let ((api (gist-get-api t)))
 +      (cond ((null gist)
@@ -35,11 +37,12 @@ diff -u a/gist.el b/gist.el
 +            (t (gh-gist-get api gist))))
 +    (let ((files (oref gist :files)))
 +      (dolist (f files)
-+        (when (equal (oref f :filename) gist-filename)
-+          (with-current-buffer (current-buffer)
++        (when (equal (oref f :filename) filename)
++          (with-current-buffer (or buffer (current-buffer))
 +            (delete-region (point-min) (point-max))
 +            (insert (oref f :content))
-+            (set-buffer-modified-p nil)))))))
++            (set-buffer-modified-p nil)
++            (switch-to-buffer (current-buffer))))))))
 +
  (defvar gist-mode-map
    (let ((map (make-sparse-keymap)))
