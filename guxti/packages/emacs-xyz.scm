@@ -716,3 +716,29 @@ serialized by EIEIO can be stored with pcache.")
      "Inspired by Go tagged structs.  alist, plist and json drivers are provided, but
 implementing others just requires to inherit from `marshal-driver'.")
     (license #f)))
+
+(define-public emacs-expreg
+  (package
+    (name "emacs-expreg")
+    (version "1.0.0")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/casouri/expreg")
+                    (commit "81803d84a00be21d5701b19ede637a2523d846e3")))
+              (sha256 (base32
+                       "07x0p3y9d4n381khgyps6pmwlv859l2mq6j7ba1a44kpbll3mpii"))))
+    (build-system emacs-build-system)
+    (arguments
+     `(#:emacs ,emacs-next))
+    (home-page "https://github.com/casouri/expreg")
+    (synopsis "Simple expand region")
+    (description
+     "This is just like expand-region, but (1) we generate all regions at once, and
+(2) should be easier to debug, and (3) we out-source language-specific
+expansions to tree-sitter.  Bind ‘expreg-expand’ and ‘expreg-contract’ and start
+using it.  Note that if point is in between two possible regions, we only keep
+the region after point.  In the example below, only region B is kept (“|”
+represents point): (region A)|(region B) Expreg also recognizes subwords if
+‘subword-mode’ is on.")
+    (license license:gpl3+)))
