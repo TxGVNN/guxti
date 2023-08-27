@@ -482,6 +482,40 @@ It provides integration with multiple built-in modes, as well as providing an
 interface to attach and interact with the processes.")
     (license license:gpl3+)))
 
+(define-public emacs-alert-next
+  (package
+    (name "emacs-alert")
+    (version "1.3.1")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/jwiegley/alert")
+             (commit "c762380ff71c429faf47552a83605b2578656380")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0c3x54svfal236jwmz2a2jl933av2p1wm83g2vapmqzifz2c0ziw"))))
+    (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
+    (propagated-inputs
+     (list emacs-gntp emacs-log4e))
+    (home-page "https://github.com/jwiegley/alert")
+    (synopsis "Growl-style notification system for Emacs")
+    (description
+     "Alert is a Growl-workalike for Emacs which uses a common notification
+interface and multiple, selectable \"styles\", whose use is fully
+customizable by the user.")
+    (license license:gpl2+)))
+
 (define-public emacs-org-alert
   (package
     (name "emacs-org-alert")
@@ -495,7 +529,7 @@ interface to attach and interact with the processes.")
                (base32
                 "12vy25sf3cz2y2y1s2s3q2c4ykfldvd8zj0vy2adiyda7bzqflgs"))))
     (build-system emacs-build-system)
-    (propagated-inputs (list emacs-org emacs-alert))
+    (propagated-inputs (list emacs-org emacs-alert-next))
     (home-page "https://github.com/spegoraro/org-alert")
     (synopsis "Notify org deadlines via notify-send")
     (description
