@@ -669,14 +669,14 @@ are slightly simplified.")
 (define-public emacs-gh
   (package
     (name "emacs-gh")
-    (version "1.0.1")
+    (version "1.0.2")
     (source (origin
               (method git-fetch)
               (uri (git-reference
                     (url "https://github.com/sigma/gh.el.git")
-                    (commit "e1423a54fc97924e75d1fde27911c3c678a7d6c3")))
+                    (commit "b5a8d8209340d49ad82dab22d23dae0434499fdf")))
               (sha256 (base32
-                       "1fr4pikcjasqy41g86pjwhz3alky42m2z7ziag051xhcd8nlm51s"))))
+                       "1vab2qdjyv4c3hfp09vbkqanfwj8ip7zi64gqbg93kf1aig1qgl9"))))
     (arguments
      `(#:phases
        (modify-phases %standard-phases
