@@ -776,3 +776,23 @@ the region after point.  In the example below, only region B is kept (“|”
 represents point): (region A)|(region B) Expreg also recognizes subwords if
 ‘subword-mode’ is on.")
     (license license:gpl3+)))
+
+(define-public emacs-codespaces
+  (package
+    (name "emacs-codespaces")
+    (version "0.2")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/patrickt/codespaces.el.git")
+                    (commit "7b0cfccec6cf590544456fc57d9f4481a992b413")))
+              (sha256 (base32
+                       "1gq09nxws90rxp5dkhyqcfkwvmn5b7p6g0x3j9caqnybgjhcl3c8"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/patrickt/codespaces.el")
+    (synopsis "Connect to GitHub Codespaces via TRAMP")
+    (description
+     "This package provides support for connecting to GitHub Codespaces via TRAMP in
+Emacs.  It also provides a completing-read interface to select codespaces.  This
+package works by registering a new \"ghcs\" method in tramp-methods.")
+    (license license:gpl3+)))
