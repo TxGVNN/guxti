@@ -19,7 +19,7 @@
 (define-public emacs-crux-me
   (package
     (name "emacs-crux")
-    (version "0.4.0.20230115")
+    (version "0.4.0.20230923")
     (source
      (origin
        (method git-fetch)
@@ -278,11 +278,11 @@ expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
 
 (define-public emacs-yasnippet-snippets-me
-  (let ((commit "7d875ead")
-        (hash "08brjw06mikxx2gm60z2hclj6sl7jvwav75yhvwbgbpm67yi0pgw"))
+  (let ((commit "c67d876a")
+        (hash "0c64mk4kkm352lfs3rxrpydq5kvb04cqb4m0rl6x8xjg4q22ynh4"))
     (package
       (name "emacs-yasnippet-snippets")
-      (version "1.0.20230802")
+      (version "1.0.20230923")
       (source
        (origin
          (method git-fetch)

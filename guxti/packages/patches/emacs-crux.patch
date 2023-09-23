@@ -1,5 +1,5 @@
 diff --git a/crux.el b/crux.el
-index bc5c741..0acad80 100644
+index bc5c741..ece7926 100644
 --- a/crux.el
 +++ b/crux.el
 @@ -6,7 +6,7 @@
@@ -101,7 +101,7 @@ index bc5c741..0acad80 100644
  
  ;;;###autoload
  (defun crux-indent-rigidly-and-copy-to-clipboard (begin end arg)
-@@ -702,7 +736,8 @@ Doesn't mess with special buffers."
+@@ -702,7 +738,8 @@ Doesn't mess with special buffers."
  (defun crux-create-scratch-buffer ()
    "Create a new scratch buffer."
    (interactive)
@@ -111,7 +111,7 @@ index bc5c741..0acad80 100644
      (switch-to-buffer buf)
      (funcall initial-major-mode)))
  
-@@ -829,5 +864,322 @@ and the entire buffer (in the absense of a region)."
+@@ -829,5 +866,335 @@ and the entire buffer (in the absense of a region)."
            (list (region-beginning) (region-end))
          (list (point) (line-end-position))))))
  
@@ -431,6 +431,19 @@ index bc5c741..0acad80 100644
 +                      (setq ediff-after-quit-hook-internal nil)
 +                      (set-window-configuration wnd))))
 +      (error "No more than 2 files should be marked"))))
++
++(defun crux-check-date-in-region()
++  "Display date in region."
++  (interactive)
++  (let ((date (buffer-substring-no-properties (region-beginning) (region-end))))
++    (message
++     (if (not date)
++         (format-time-string "%s" (current-time))
++       (if (not (string-match-p "^[0-9]+$" date))
++           (format-time-string "%s" (date-to-time date))
++         (format "%s == %s"
++                 (format-time-string "%Y-%m-%d %H:%M:%S %z" (seconds-to-time (string-to-number date)) t)
++                 (format-time-string "%Y-%m-%d %H:%M:%S %z" (seconds-to-time (string-to-number date)) nil)))))))
 +
  (provide 'crux)
  ;;; crux.el ends here
