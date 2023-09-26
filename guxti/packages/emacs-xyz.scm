@@ -796,3 +796,34 @@ represents point): (region A)|(region B) Expreg also recognizes subwords if
 Emacs.  It also provides a completing-read interface to select codespaces.  This
 package works by registering a new \"ghcs\" method in tramp-methods.")
     (license license:gpl3+)))
+
+(define-public emacs-symbol-overlay
+  (package
+    (name "emacs-symbol-overlay")
+    (version "4.2.1")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/wolray/symbol-overlay")
+             (commit "a783d7b5d8dee5ba9f5e7c00a834fbd6d645081b")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1ah4y3j0kdzf3ygrba5bjs04fpbpc9hwrzb8bb8ql0r42vdhbng5"))))
+    (build-system emacs-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after
+             'unpack 'fix-version
+           (lambda _
+             (substitute*
+                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
+               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
+                (string-append ";; Version: " ,version "\n"))))))))
+    (home-page "https://github.com/wolray/symbol-overlay")
+    (synopsis "Highlight symbols and perform various search operations on them")
+    (description
+     "This package provides functions for highlighting and navigating
+between symbols.")
+    (license license:gpl3+)))
