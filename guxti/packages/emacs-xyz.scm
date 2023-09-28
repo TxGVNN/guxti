@@ -402,8 +402,7 @@ used in each project if desired.")
          (sha256 (base32 hash))))
       (build-system emacs-build-system)
       (arguments
-       `(#:emacs ,emacs-next
-         #:include (cons* "^build\\/" %default-include)))
+       `(#:include (cons* "^build\\/" %default-include)))
       (home-page "https://github.com/mickeynp/combobulate")
       (synopsis "Structured Navigation and Editing.")
       (description "Combobulate is a package that adds structured editing
@@ -763,8 +762,6 @@ implementing others just requires to inherit from `marshal-driver'.")
               (sha256 (base32
                        "07x0p3y9d4n381khgyps6pmwlv859l2mq6j7ba1a44kpbll3mpii"))))
     (build-system emacs-build-system)
-    (arguments
-     `(#:emacs ,emacs-next))
     (home-page "https://github.com/casouri/expreg")
     (synopsis "Simple expand region")
     (description

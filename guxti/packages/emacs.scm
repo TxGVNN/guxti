@@ -17,22 +17,3 @@
       (srfi srfi-1)
       (ice-9 ftw))))
 
-(define-public emacs-next-nox
-  (package/inherit emacs-next-tree-sitter
-    (name "emacs-next-nox")
-    (build-system gnu-build-system)
-    (inputs (modify-inputs (package-inputs emacs-next-tree-sitter)
-              (delete "libx11" "gtk+" "libxft" "libtiff" "giflib" "libjpeg"
-                      "imagemagick" "libpng" "librsvg" "libxpm" "libice"
-                      "libsm" "cairo" "pango" "harfbuzz"
-                      ;; These depend on libx11, so remove them as well.
-                      "libotf" "m17n-lib" "dbus")))
-    (arguments
-     (substitute-keyword-arguments (package-arguments emacs-next-tree-sitter)
-       ((#:configure-flags flags #~'())
-        #~(delete "--with-cairo" #$flags))
-       ((#:modules _) (%emacs-modules build-system))
-       ((#:phases phases)
-        #~(modify-phases #$phases
-            (delete 'restore-emacs-pdmp)
-            (delete 'strip-double-wrap)))))))
