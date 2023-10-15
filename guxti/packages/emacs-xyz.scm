@@ -34,7 +34,7 @@
         (parameterize
             ((%patch-path
               (map (lambda (directory)
-                     (string-append directory "guxti/packages/patches"))
+                     (string-append directory "/guxti/packages/patches"))
                    %load-path)))
           (search-patches "emacs-crux.patch")))))
     (build-system emacs-build-system)
