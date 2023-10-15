@@ -1,5 +1,5 @@
 diff --git a/crux.el b/crux.el
-index bc5c741..ece7926 100644
+index d501e4d..c804611 100644
 --- a/crux.el
 +++ b/crux.el
 @@ -6,7 +6,7 @@
@@ -101,7 +101,7 @@ index bc5c741..ece7926 100644
  
  ;;;###autoload
  (defun crux-indent-rigidly-and-copy-to-clipboard (begin end arg)
-@@ -702,7 +738,8 @@ Doesn't mess with special buffers."
+@@ -700,7 +736,8 @@ Doesn't mess with special buffers."
  (defun crux-create-scratch-buffer ()
    "Create a new scratch buffer."
    (interactive)
@@ -111,7 +111,7 @@ index bc5c741..ece7926 100644
      (switch-to-buffer buf)
      (funcall initial-major-mode)))
  
-@@ -829,5 +866,335 @@ and the entire buffer (in the absense of a region)."
+@@ -827,5 +864,335 @@ and the entire buffer (in the absense of a region)."
            (list (region-beginning) (region-end))
          (list (point) (line-end-position))))))
  

@@ -19,22 +19,22 @@
 (define-public emacs-crux-me
   (package
     (name "emacs-crux")
-    (version "0.4.0.20230923")
+    (version "0.4.0.20231015")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/bbatsov/crux")
-             (commit "f8789f6")))
+             (commit "3998b75")))
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "0bsyrp0xmsi1vdpgpx6n3vfrmh75bpp8ncync8srzx6clbl71ch4"))
+         "00l0y7alcsgmhiif9isjkw6i7lgq540414m9kzadjqnf49jq28zr"))
        (patches
         (parameterize
             ((%patch-path
               (map (lambda (directory)
-                     (string-append directory "/guxti/packages/patches"))
+                     (string-append directory "guxti/packages/patches"))
                    %load-path)))
           (search-patches "emacs-crux.patch")))))
     (build-system emacs-build-system)
