@@ -7,6 +7,7 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix utils)
   #:use-module (gnu packages)
+  #:use-module (gnu packages ncurses)
   #:use-module (gnu packages texinfo)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages version-control)
@@ -895,4 +896,59 @@ output of the following shell command: export | cat -v | grep LESS\\|TERM'; stty
 You can also set the variable `coterm--t-log-buffer to \"coterm-log\", reproduce
 the issue and attach the contents of the buffer named \"coterm-log\", which now
 contains all process output that was sent to coterm.")
+    (license license:gpl3+)))
+
+(define-public emacs-eat-next
+  (package
+    (name "emacs-eat")
+    (version "0.9.3")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://codeberg.org/akib/emacs-eat")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         "1lna10sqlxrpncjbhvljnqfcdrlrgx6r1qb1lxi57wvv6nkwbzk2"))
+       (modules '((guix build utils)))
+       (snippet
+        #~(begin
+            ;; Remove generated terminfo database.
+            (delete-file-recursively "terminfo")))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:tests? #t
+      #:include #~(cons* "^term/"
+                         "^terminfo/"
+                         "^integration/"
+                         "\\.ti$"
+                         %default-include)
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-before 'install 'build-info
+            (lambda _
+              (invoke "make" "info")))
+          (add-before 'install 'build-terminfo-database
+            (lambda _
+              (invoke "make" "terminfo")))
+          (add-before 'install 'patch-ncurses-tic-executable
+            (lambda* (#:key inputs #:allow-other-keys)
+              (let ((tic (search-input-file inputs "/bin/tic")))
+                (substitute* "eat.el"
+                  (("\\(executable-find \"tic\"\\)")
+                   (string-append "\"" tic "\"")))))))))
+    (propagated-inputs (list emacs-compat))
+    (native-inputs
+     (list texinfo))
+    (inputs
+     (list ncurses))
+    (home-page "https://codeberg.org/akib/emacs-eat")
+    (synopsis "Terminal emulator in Emacs")
+    (description
+     "Eat (Emulate A Terminal) is a terminal emulator in Emacs, written in
+pure Elisp.  It has features like complete mouse support and shell
+integration.")
     (license license:gpl3+)))
