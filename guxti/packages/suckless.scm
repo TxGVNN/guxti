@@ -12,7 +12,7 @@
   (package
     (inherit st)
     (name "xst")
-    (version "0.8.4.1-1")
+    (version "0.8.4.1-2")
     (source
      (origin
        (method git-fetch)
