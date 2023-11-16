@@ -255,7 +255,7 @@ will be loaded automatically by Embark.")
 
 (define-public emacs-consult-yasnippet-me
   (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
-        (revision "20230226"))
+        (revision "20231116"))
     (package
       (name "emacs-consult-yasnippet")
       (version (string-append "0.2." revision))
@@ -269,7 +269,7 @@ will be loaded automatically by Embark.")
          (sha256
           (base32 "13hmmsnmh32vafws61sckzzy354rq0nslqpyzhw97iwvn0fpsa35"))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult-me emacs-yasnippet))
+      (propagated-inputs (list emacs-consult-me emacs-yasnippet-me))
       (home-page "https://github.com/mohkale/consult-yasnippet")
       (synopsis "Consulting-read interface for Yasnippet")
       (description
@@ -278,12 +278,54 @@ a completing-read interface.  It supports previewing the current snippet
 expansion and overwriting the marked region with a new snippet completion.")
       (license license:gpl3+))))
 
+
+(define-public emacs-yasnippet-me
+  (package
+    (name "emacs-yasnippet")
+    (version "0.14.0-1")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/joaotavora/yasnippet")
+             (commit "0.14.0")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0via9dzw8m5lzymg1h78xkwjssh39zr3g6ccyamlf1rjzjsyxknv"))
+       (patches
+        (parameterize
+            ((%patch-path
+              (map (lambda (directory)
+                     (string-append directory "/guxti/packages/patches"))
+                   %load-path)))
+          (search-patches "emacs-yasnippet-fix-empty-snippet-next.patch"
+                          "emacs-yasnippet-fix-tests.patch"
+                          "emacs-yasnippet-lighter.patch")))))
+    (build-system emacs-build-system)
+    (arguments
+     `(#:tests? #t
+       #:test-command '("emacs" "--batch"
+                        "-l" "yasnippet-tests.el"
+                        "-f" "ert-run-tests-batch-and-exit")
+       #:phases
+       (modify-phases %standard-phases
+         ;; Set HOME, otherwise test-rebindings fails.
+         (add-before 'check 'set-home
+           (lambda _
+             (setenv "HOME" (getcwd))
+             #t)))))
+    (home-page "https://github.com/joaotavora/yasnippet")
+    (synopsis "Yet another snippet extension for Emacs")
+    (description "YASnippet is a template system for Emacs.  It allows you to
+type an abbreviation and automatically expand it into function templates.")
+    (license license:gpl3+)))
+
 (define-public emacs-yasnippet-snippets-me
   (let ((commit "c67d876a")
         (hash "0c64mk4kkm352lfs3rxrpydq5kvb04cqb4m0rl6x8xjg4q22ynh4"))
     (package
       (name "emacs-yasnippet-snippets")
-      (version "1.0.20230923")
+      (version "1.0.20231116")
       (source
        (origin
          (method git-fetch)
@@ -308,7 +350,7 @@ expansion and overwriting the marked region with a new snippet completion.")
                   (string-append ";; Version: " ,version "\n"))))))
          #:include (cons* "^snippets\\/" %default-include)))
       (propagated-inputs
-       (list emacs-yasnippet))
+       (list emacs-yasnippet-me))
       (home-page "https://github.com/TxGVNN/yasnippet-snippets")
       (synopsis "Collection of YASnippet snippets for many languages")
       (description "This package provides an extensive collection of YASnippet
