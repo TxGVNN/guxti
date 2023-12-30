@@ -4,6 +4,7 @@
   #:use-module (guix build-system copy)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (gnu packages compression)
   #:use-module ((guix licenses) #:prefix license:))
 
 (define-public ghcli
@@ -49,9 +50,9 @@ you are already working with git and your code..")
        '(("kubectl" "bin/kubectl"))
        #:phases
        (modify-phases %standard-phases
-                      (add-after
-                       'unpack 'chmod
-                       (lambda _ (chmod "kubectl" #o775))))))
+         (add-after
+             'unpack 'chmod
+           (lambda _ (chmod "kubectl" #o775))))))
     (home-page "https://kubernetes.io/docs/tasks/tools/install-kubectl-linux")
     (synopsis "Kubernetes cli tool")
     (description "Kubernetes cli tool")
@@ -78,3 +79,25 @@ you are already working with git and your code..")
      "Helm is a tool for managing Charts.
 Charts are packages of pre-configured Kubernetes resources.")
     (license license:asl2.0)))
+
+(define-public terraform
+  (package
+    (name "terraform")
+    (version "1.5.7")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://releases.hashicorp.com/terraform/" version "/terraform_" version "_linux_amd64.zip"))
+       (sha256
+        (base32
+         "0b08z9ssnzh3xgz5a7fghl262k3sib4ci0lrmxay4ap55v1ppvf0"))))
+    (build-system copy-build-system)
+    (native-inputs (list unzip))
+    (arguments
+     '(#:install-plan
+       '(("terraform" "bin/terraform"))))
+    (home-page "https://github.com/hashicorp/terraform")
+    (synopsis "The tool to automate infrastructure on any cloud")
+    (description
+     "Terraform enables you to safely and predictably create, change, and improve infrastructure.")
+    (license license:mpl2.0)))
