@@ -1,8 +1,8 @@
 diff --git a/perspective.el b/perspective.el
-index ec62bec..5e30830 100644
+index e9f8859..28920fa 100644
 --- a/perspective.el
 +++ b/perspective.el
-@@ -599,17 +599,15 @@ EVENT is the click event triggering this function call."
+@@ -712,17 +712,15 @@ EVENT is the click event triggering this function call."
  (defun persp-update-modestring ()
    "Update the string to reflect the current perspectives.
  Has no effect when `persp-show-modestring' is nil."
@@ -28,62 +28,6 @@ index ec62bec..5e30830 100644
  
  (defun persp-format-name (name)
    "Format the perspective name given by NAME for display in the mode line or header line."
-@@ -665,6 +663,7 @@ perspective's local variables are set.
- If NORECORD is non-nil, do not update the
- `persp-last-switch-time' for the switched perspective."
-   (interactive "i")
-+ (unless (> (minibuffer-depth) 0)
-   (unless (persp-valid-name-p name)
-     (setq name (persp-prompt (and (persp-last) (persp-name (persp-last))))))
-   (if (and (persp-curr) (equal name (persp-current-name))) name
-@@ -679,7 +678,7 @@ If NORECORD is non-nil, do not update the
-       (unless norecord
-         (setf (persp-last-switch-time persp) (current-time))
-         (run-hooks 'persp-switch-hook))
--      name)))
-+      name))))
- 
- (defun persp-switch-by-number (num)
-   "Switch to the perspective given by NUMBER."
-@@ -1756,20 +1755,28 @@ restored."
- ;;; --- xref code
- 
- ;; xref is not available in Emacs 24, so be careful:
--(when (require 'xref nil t)
--
-+(with-eval-after-load 'xref
-   (defvar persp--xref-marker-ring (make-hash-table :test 'equal))
--
--  (defun persp--set-xref-marker-ring ()
--    "Set xref--marker-ring per persp."
--    (defvar xref-marker-ring-length)
--    (defvar xref--marker-ring)
--    (let ((persp-curr-name (persp-name (persp-curr))))
--      (unless (gethash persp-curr-name persp--xref-marker-ring)
--        (puthash persp-curr-name (make-ring xref-marker-ring-length)
--                 persp--xref-marker-ring))
--      (setq xref--marker-ring (gethash persp-curr-name persp--xref-marker-ring)))))
--
-+  (if (boundp 'xref--history)
-+      ;; Emacs 29:
-+      (defun persp--set-xref-marker-ring ()
-+        "Set xref--history per persp."
-+        (defvar xref--history)
-+        (let ((persp-curr-name (persp-name (persp-curr))))
-+          (unless (gethash persp-curr-name persp--xref-marker-ring)
-+            (puthash persp-curr-name (cons nil nil)
-+                     persp--xref-marker-ring))
-+          (setq xref--history (gethash persp-curr-name persp--xref-marker-ring))))
-+    ;; Emacs 28 and earlier:
-+    (defun persp--set-xref-marker-ring ()
-+      "Set xref--marker-ring per persp."
-+      (defvar xref-marker-ring-length)
-+      (defvar xref--marker-ring)
-+      (let ((persp-curr-name (persp-name (persp-curr))))
-+        (unless (gethash persp-curr-name persp--xref-marker-ring)
-+          (puthash persp-curr-name (make-ring xref-marker-ring-length)
-+                   persp--xref-marker-ring))
-+        (setq xref--marker-ring (gethash persp-curr-name persp--xref-marker-ring))))))
- 
- ;;; --- done
- 
+-- 
+2.41.0
+

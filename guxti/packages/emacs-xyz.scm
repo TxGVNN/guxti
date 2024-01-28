@@ -59,16 +59,16 @@
 (define-public emacs-perspective-me
   (package
     (name "emacs-perspective")
-    (version "2.16.20230114")
+    (version "2.18.1")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/nex3/perspective-el")
-             (commit "1c257f3")))
+             (commit "2.18")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0rgkajcw7fismqmww1r0yy84hnqripx5dwklf2mfm042whn9bqgf"))
+        (base32 "1r026cw6p2ss5wg8mxgzf6iv1lb9pdnqyf6yrqb914aibkrvp9b6"))
        (patches
         (parameterize
             ((%patch-path
@@ -87,7 +87,6 @@
                  (string-append (string-drop ,name (string-length "emacs-")) ".el")
                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
                 (string-append ";; Version: " ,version "\n"))))))
-
        #:tests? #t
        #:test-command '("emacs" "-Q" "-batch" "-L" "."
                         "-l" "test/test-perspective.el"
@@ -139,54 +138,11 @@ perspective only its buffers are available by default.")
 installed packages.")
       (license license:gpl3+))))
 
-(define-public emacs-consult-me
-  (let ((commit "0.35"))
-    (package
-      (name "emacs-consult")
-      (version "0.35.20230715")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/minad/consult")
-               (commit commit)))
-         (sha256
-          (base32 "0a20rfqv2yfwqal1vx6zzg92qgr32p3rp7n6awnyb010jnykqszw"))
-         (file-name (git-file-name name version))))
-      (build-system emacs-build-system)
-      (arguments
-       (list
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-after 'unpack 'fix-version
-              (lambda _
-                (substitute*
-                    (string-append (string-drop #$name (string-length "emacs-")) ".el")
-                  (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                   (string-append ";; Version: " #$version "\n")))))
-            (add-after 'install 'makeinfo
-              (lambda _
-                (invoke "emacs"
-                        "--batch"
-                        "--eval=(require 'ox-texinfo)"
-                        "--eval=(find-file \"README.org\")"
-                        "--eval=(org-texinfo-export-to-info)")
-                (install-file "consult.info"
-                              (string-append #$output "/share/info")))))))
-      (native-inputs (list texinfo))
-      (propagated-inputs (list emacs-compat))
-      (home-page "https://github.com/minad/consult")
-      (synopsis "Consulting completing-read")
-      (description "This package provides various handy commands based on the
-Emacs completion function completing-read, which allows quickly selecting from a
-list of candidates.")
-      (license license:gpl3+))))
-
 (define-public emacs-embark-me
-  (let ((commit "c914efe881df2bc6a2bd35cc7ee975d3e9d4a418")) ;version bump
+  (let ((commit "1.0")) ;version bump
     (package
       (name "emacs-embark")
-      (version "0.22.1.20230427")
+      (version (string-append commit ".1"))
       (source
        (origin
          (method git-fetch)
@@ -194,11 +150,11 @@ list of candidates.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "1l288w27wav0r71hprqi74r77042d1fx3p1zmi05vl6z6230h48b"))
+          (base32 "14alpanynww6z7yxxyiiy24c0p4pq1argsb0pmqavq25mdxgn4v2"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-avy emacs-consult-me))
+       (list emacs-avy emacs-consult))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -222,10 +178,10 @@ the context.")
       (license license:gpl3+))))
 
 (define-public emacs-embark-consult
-  (let ((commit "c914efe881df2bc6a2bd35cc7ee975d3e9d4a418")) ;version bump
+  (let ((commit "1.0")) ;version bump
     (package
       (name "emacs-embark-consult")
-      (version "0.22.1")
+      (version (string-append commit ".1"))
       (source
        (origin
          (method git-fetch)
@@ -233,11 +189,11 @@ the context.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "1l288w27wav0r71hprqi74r77042d1fx3p1zmi05vl6z6230h48b"))
+          (base32 "14alpanynww6z7yxxyiiy24c0p4pq1argsb0pmqavq25mdxgn4v2"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-consult-me emacs-embark-me))
+       (list emacs-consult emacs-embark-me))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -255,7 +211,7 @@ will be loaded automatically by Embark.")
 
 (define-public emacs-consult-yasnippet-me
   (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
-        (revision "20231116"))
+        (revision "20240128"))
     (package
       (name "emacs-consult-yasnippet")
       (version (string-append "0.2." revision))
@@ -269,7 +225,7 @@ will be loaded automatically by Embark.")
          (sha256
           (base32 "13hmmsnmh32vafws61sckzzy354rq0nslqpyzhw97iwvn0fpsa35"))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult-me emacs-yasnippet-me))
+      (propagated-inputs (list emacs-consult emacs-yasnippet-me))
       (home-page "https://github.com/mohkale/consult-yasnippet")
       (synopsis "Consulting-read interface for Yasnippet")
       (description
