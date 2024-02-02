@@ -317,17 +317,18 @@ automatically made available to YASnippet.")
 (define-public emacs-eev
   (package
     (name "emacs-eev")
-    (version "20230127")
+    (version "20240115")
     (source (origin
               (method url-fetch)
               (uri (string-append "https://elpa.gnu.org/packages/eev-" version ".tar"))
               (sha256
-               (base32 "12f8r1mymd73gjbha6w9fk1ar38yxgbnrr6asvr8aa9rhcwwgxqm"))))
+               (base32 "0vlw88wjgzgl3wsa7k5p03qvj2yipvjsrjcrv8vjlvnm83pszskh"))))
     (build-system emacs-build-system)
     (arguments
      `(#:phases
        (modify-phases %standard-phases
-         (delete 'patch-el-files))))
+         (delete 'patch-el-files))
+       #:exclude (delete "^[^/]*tests?\\.el$" %default-exclude)))
     (home-page "http://anggtwu.net/#eev")
     (synopsis "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)")
     (description
