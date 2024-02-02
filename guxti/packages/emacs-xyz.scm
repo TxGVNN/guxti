@@ -951,3 +951,24 @@ contains all process output that was sent to coterm.")
 pure Elisp.  It has features like complete mouse support and shell
 integration.")
     (license license:gpl3+)))
+
+(define-public emacs-docker-me
+  (package
+    (name "emacs-docker")
+    (version "2.3.1.20240202")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/Silex/docker.el")
+             (commit "2.3.1")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "13927ns3393q40gxrfzyqh6ajxzfjg14d0srfxi6ild3pmaz0460"))))
+    (propagated-inputs (list emacs-aio emacs-dash emacs-s emacs-tablist emacs-transient))
+    (arguments `(#:tests? #false))      ;no tests
+    (build-system emacs-build-system)
+    (home-page "https://github.com/Silex/docker.el")
+    (synopsis "Manage docker from Emacs")
+    (description "This package provides an Emacs interface for Docker.")
+    (license license:gpl3+)))
