@@ -632,11 +632,11 @@ are slightly simplified.")
 (define-public emacs-gist
   (package
     (name "emacs-gist")
-    (version "1.5.0")
+    (version "1.5.0.20240204")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/defunkt/gist.el.git")
+                    (url "https://github.com/emacsmirror/gist.git")
                     (commit "314fe6ab80fae35b95f0734eceb82f72813b6f41")))
               (sha256 (base32
                        "0vbyzww9qmsvdpdc6d6wq6drlq1r9y92807fjhs0frgzmq6dg0rh"))
