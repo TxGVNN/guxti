@@ -2,6 +2,17 @@ diff --git a/detached-list.el b/detached-list.el
 index 66ceafd..daed53e 100644
 --- a/detached-list.el
 +++ b/detached-list.el
+@@ -33,8 +33,8 @@
+ ;;;; Variables
+ 
+ (defcustom detached-list-config
+-  `((:name "Command" :function detached-list--command-str :length 90)
+-    (:name "Status" :function detached-list--status-str :length 10)
++  `((:name "Status" :function detached-list--status-str :length 6)
++    (:name "Command" :function detached-list--command-str :length 90)
+     (:name "Host" :function detached--host-str :length 15 :face detached-host-face)
+     (:name "Directory" :function detached--working-dir-str :length 40 :face detached-working-dir-face)
+     (:name "Metadata" :function detached--metadata-str :length 30 :face detached-metadata-face)
 @@ -859,19 +859,43 @@ If prefix-argument is provided unmark instead of mark."
                    (member (symbol-name (detached-session-id it)) session-ids))
                  sessions)))
