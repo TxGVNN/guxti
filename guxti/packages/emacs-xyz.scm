@@ -387,11 +387,11 @@ used in each project if desired.")
     (license license:gpl3+)))
 
 (define-public emacs-combobulate
-  (let ((commit "582f896")
-        (hash "18g0djh9dm4br602p522c8bsjspqd1dmk97via5lf8iv39531m2n"))
+  (let ((commit "c7e4670a3047c0b58dff3746577a5c8e5832cfba")
+        (hash "063w2sm0c7xhg3ml31xp870azb0sv7z689lnbnjnbl3rfdy4kg50"))
     (package
       (name "emacs-combobulate")
-      (version "0.1.20230619")
+      (version "0.1.20240217")
       (source
        (origin
          (method git-fetch)
