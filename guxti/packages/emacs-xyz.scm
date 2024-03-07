@@ -972,3 +972,28 @@ integration.")
     (synopsis "Manage docker from Emacs")
     (description "This package provides an Emacs interface for Docker.")
     (license license:gpl3+)))
+
+(define-public emacs-denote
+  (package
+    (name "emacs-denote")
+    (version "2.2.4.20240307")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://git.sr.ht/~protesilaos/denote")
+             (commit "87518c246861006fec96a017e30e15fa81421a9e")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0avn1gghsbjpw1hxddmmk5qqyna43nzhzmxg3d3vr6wp50qjbkww"))))
+    (build-system emacs-build-system)
+    (native-inputs (list texinfo))
+    (home-page "https://protesilaos.com/emacs/denote/")
+    (synopsis "Simple notes for Emacs")
+    (description
+     "Denote is a simple note-taking tool for Emacs.  It is based on the idea that
+notes should follow a predictable and descriptive file-naming scheme.  The
+file name must offer a clear indication of what the note is about, without
+reference to any other metadata.  Denote basically streamlines the creation of
+such files while providing facilities to link between them.")
+    (license license:gpl3+)))
