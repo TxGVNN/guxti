@@ -14,8 +14,7 @@
   #:use-module (gnu packages perl)
   #:use-module (gnu packages screen)
   #:use-module (gnu packages emacs)
-  #:use-module (gnu packages emacs-xyz)
-  #:use-module (guxti packages shellutils))
+  #:use-module (gnu packages emacs-xyz))
 
 (define-public emacs-crux-me
   (package
@@ -335,55 +334,6 @@ automatically made available to YASnippet.")
      "Eev's central idea is that you can keep \"executable logs\" of what you do, in a
 format that is reasonably readable and that is easy to \"play back\" later, step
 by step and in any order.  We call these \"executable logs\" _e-scripts_.")
-    (license license:gpl3+)))
-
-(define-public emacs-envrc
-  (package
-    (name "emacs-envrc")
-    (version "0.6")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/purcell/envrc")
-             (commit version)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32
-         "1a4ixhvs53ymcm0fjlvnh47rd0sp23w4ngns4m0ydcs5vq8hwq5m"))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:tests? #false                   ;FIXME: 8 out of 11 tests fail
-      #:test-command #~(list "emacs" "-Q" "--batch"
-                             "-l" "envrc-tests.el"
-                             "-f" "ert-run-tests-batch-and-exit")
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'set-direnv-location
-            (lambda* (#:key inputs #:allow-other-keys)
-              (emacs-substitute-variables "envrc.el"
-                ("envrc-direnv-executable"
-                 (search-input-file inputs "/bin/direnv")))))
-          (add-after 'set-direnv-location 'fix-version
-            (lambda _
-              (substitute*
-                  (string-append (string-drop #$name (string-length "emacs-")) ".el")
-                (("^;; Package-Version: ([^/[:blank:]\r\n]*)(.*)$")
-                 (string-append ";; Version: " #$version "\n"))))))))
-    (inputs
-     (list direnv-2.32.3))
-    (propagated-inputs
-     (list emacs-inheritenv))
-    (home-page "https://github.com/purcell/envrc")
-    (synopsis "Support for Direnv which operates buffer-locally")
-    (description
-     "This is library which uses Direnv to set environment variables on
-a per-buffer basis.  This means that when you work across multiple projects
-which have @file{.envrc} files, all processes launched from the buffers ``in''
-those projects will be executed with the environment variables specified in
-those files.  This allows different versions of linters and other tools to be
-used in each project if desired.")
     (license license:gpl3+)))
 
 (define-public emacs-combobulate

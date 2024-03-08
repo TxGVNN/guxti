@@ -4,5 +4,5 @@
   (channel
    (name guix)
    (url "https://git.savannah.gnu.org/git/guix.git")
-   (commit "963a21bedcdb19c3a48af286b5b0cdcefa97fdb8")
+   (commit "d79c88e8809d2079452fd276bf4d17eb16636ff9")
    (branch "master"))))
