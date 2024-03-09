@@ -410,11 +410,11 @@ and movement to a wide range of programming languages.")
       (license license:gpl3+))))
 
 (define-public emacs-project-tasks
-  (let ((commit "0a2578ec5f59ea5bb69cf09e6bf5049f21b12a7f")
-        (hash "1bz8z89cvcnhsry0dl2sjpni2pw22qd7w5pp1c37zld0n1kljs3r"))
+  (let ((commit "6a97747d53ba1e0c2cb7cfc7f4e9e3011e8e4208")
+        (hash "1bwnisl6hgm4b9kxm0qzj15hfkd5hw1g8mzq90prdnmjzp48hh0k"))
     (package
       (name "emacs-project-tasks")
-      (version "0.4.1")
+      (version "0.5.0")
       (source
        (origin
          (method git-fetch)
