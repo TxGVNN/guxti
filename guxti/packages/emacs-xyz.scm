@@ -316,12 +316,12 @@ automatically made available to YASnippet.")
 (define-public emacs-eev
   (package
     (name "emacs-eev")
-    (version "20240115")
+    (version "20240205")
     (source (origin
               (method url-fetch)
               (uri (string-append "https://elpa.gnu.org/packages/eev-" version ".tar"))
               (sha256
-               (base32 "0vlw88wjgzgl3wsa7k5p03qvj2yipvjsrjcrv8vjlvnm83pszskh"))))
+               (base32 "06psmcf3yi7pincsbhjrcrml0wzwgmlv6xy2fbpg1sg8vlibbgi3"))))
     (build-system emacs-build-system)
     (arguments
      `(#:phases
