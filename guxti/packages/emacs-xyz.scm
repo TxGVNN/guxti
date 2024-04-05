@@ -492,14 +492,14 @@ changing the org-alert-interval variable to the number of seconds you'd like.")
 (define-public emacs-ob-compile
   (package
     (name "emacs-ob-compile")
-    (version "0.3")
+    (version "0.4")
     (source (origin
               (method git-fetch)
               (uri (git-reference
                     (url "https://github.com/TxGVNN/ob-compile.git")
                     (commit version)))
               (sha256 (base32
-                       "06zkjnv324bwj1bd2kdvxar0is992qngl5n94d4z2cpx3zcn2c5q"))))
+                       "1l3hifa88jvzr75rz4cc5q0w8y60qnw7jin6x3fcam8915a1nd2f"))))
     (build-system emacs-build-system)
     (home-page "https://github.com/TxGVNN/ob-compile")
     (synopsis "Run compile by org-babel")
