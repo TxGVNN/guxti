@@ -16,20 +16,20 @@
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz))
 
-(define-public emacs-crux-me
+(define-public emacs-crux
   (package
     (name "emacs-crux")
-    (version "0.4.0.20231015")
+    (version "0.5.0.20240414")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/bbatsov/crux")
-             (commit "3998b75")))
+             (commit "6ed75a6")))
        (file-name (git-file-name name version))
        (sha256
         (base32
-         "00l0y7alcsgmhiif9isjkw6i7lgq540414m9kzadjqnf49jq28zr"))
+         "09lybi0bld14bdfvbji5cxrwrwflcvfnkdk618yybv1zphxmj2nx"))
        (patches
         (parameterize
             ((%patch-path
@@ -37,7 +37,6 @@
                      (string-append directory "/guxti/packages/patches"))
                    %load-path)))
           (search-patches "emacs-crux.patch")))))
-    (build-system emacs-build-system)
     (arguments
      `(#:phases
        (modify-phases %standard-phases
@@ -48,7 +47,8 @@
                  (string-append (string-drop ,name (string-length "emacs-")) ".el")
                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
                 (string-append ";; Version: " ,version "\n"))))))))
-    (propagated-inputs (list emacs-seq emacs-shrink-path))
+    (propagated-inputs (list emacs-shrink-path))
+    (build-system emacs-build-system)
     (home-page "https://github.com/bbatsov/crux")
     (synopsis "Collection of useful functions for Emacs")
     (description
