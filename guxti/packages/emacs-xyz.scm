@@ -237,16 +237,16 @@ expansion and overwriting the marked region with a new snippet completion.")
 (define-public emacs-yasnippet-me
   (package
     (name "emacs-yasnippet")
-    (version "0.14.0-1")
+    (version "0.14.1-1")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/joaotavora/yasnippet")
-             (commit "0.14.0")))
+             (commit "eb5ba26")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0via9dzw8m5lzymg1h78xkwjssh39zr3g6ccyamlf1rjzjsyxknv"))
+        (base32 "1n4vrl504hiiiz44h30zr5azkzm160zrxbcxim5f6nc55lgpkvqk"))
        (patches
         (parameterize
             ((%patch-path
@@ -254,7 +254,6 @@ expansion and overwriting the marked region with a new snippet completion.")
                      (string-append directory "/guxti/packages/patches"))
                    %load-path)))
           (search-patches "emacs-yasnippet-fix-empty-snippet-next.patch"
-                          "emacs-yasnippet-fix-tests.patch"
                           "emacs-yasnippet-lighter.patch")))))
     (build-system emacs-build-system)
     (arguments
