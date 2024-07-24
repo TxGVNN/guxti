@@ -274,11 +274,11 @@ type an abbreviation and automatically expand it into function templates.")
     (license license:gpl3+)))
 
 (define-public emacs-yasnippet-snippets-me
-  (let ((commit "c67d876a")
-        (hash "0c64mk4kkm352lfs3rxrpydq5kvb04cqb4m0rl6x8xjg4q22ynh4"))
+  (let ((commit "13dec7de")
+        (hash "0psjdrqhwwk42k3jfjffrgnpa2dq8nznb8xfh4v4jbw0wqlq6vlm"))
     (package
       (name "emacs-yasnippet-snippets")
-      (version "1.0.20231116")
+      (version "1.1.20240724")
       (source
        (origin
          (method git-fetch)
