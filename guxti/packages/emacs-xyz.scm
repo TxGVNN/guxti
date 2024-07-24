@@ -137,7 +137,7 @@ installed packages.")
       (license license:gpl3+))))
 
 (define-public emacs-embark-me
-  (let ((commit "1.0")) ;version bump
+  (let ((commit "1.1")) ;version bump
     (package
       (name "emacs-embark")
       (version (string-append commit ".1"))
@@ -148,7 +148,7 @@ installed packages.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "14alpanynww6z7yxxyiiy24c0p4pq1argsb0pmqavq25mdxgn4v2"))
+          (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
@@ -176,7 +176,7 @@ the context.")
       (license license:gpl3+))))
 
 (define-public emacs-embark-consult
-  (let ((commit "1.0")) ;version bump
+  (let ((commit "1.1")) ;version bump
     (package
       (name "emacs-embark-consult")
       (version (string-append commit ".1"))
@@ -187,7 +187,7 @@ the context.")
                (url "https://github.com/oantolin/embark")
                (commit commit)))
          (sha256
-          (base32 "14alpanynww6z7yxxyiiy24c0p4pq1argsb0pmqavq25mdxgn4v2"))
+          (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
