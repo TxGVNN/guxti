@@ -47,7 +47,6 @@
                  (string-append (string-drop ,name (string-length "emacs-")) ".el")
                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
                 (string-append ";; Version: " ,version "\n"))))))))
-    (propagated-inputs (list emacs-shrink-path))
     (build-system emacs-build-system)
     (home-page "https://github.com/bbatsov/crux")
     (synopsis "Collection of useful functions for Emacs")
