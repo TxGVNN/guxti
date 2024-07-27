@@ -10,7 +10,7 @@
 (define-public ghcli
   (package
     (name "ghcli")
-    (version "2.27.0")
+    (version "2.53.0")
     (source
      (origin
        (method url-fetch)
@@ -18,7 +18,7 @@
                            version "/gh_" version "_linux_amd64.tar.gz"))
        (sha256
         (base32
-         "0ivpc85cs35yrx7immcn67pa3ml02ig4rxlj047fkr7d95z9iqm3"))))
+         "1inhplwfrzp7x9bgnvnxiff8lyw2kcmf9jmnla9zbq1h4ybayb7d"))))
     (build-system copy-build-system)
     (arguments
      '(#:install-plan
