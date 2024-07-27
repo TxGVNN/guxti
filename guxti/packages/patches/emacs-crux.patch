@@ -1,33 +1,13 @@
 diff --git a/crux.el b/crux.el
-index 63e4e58..2937986 100644
+index 63e4e58..c71e85c 100644
 --- a/crux.el
 +++ b/crux.el
-@@ -6,7 +6,7 @@
- ;; URL: https://github.com/bbatsov/crux
- ;; Version: 0.5.0
- ;; Keywords: convenience
--;; Package-Requires: ((emacs "26.1"))
-+;; Package-Requires: ((emacs "26.1") (shrink-path "0.3.1"))
- 
- ;; This file is not part of GNU Emacs.
- 
-@@ -38,6 +38,8 @@
- (require 'seq)
- (require 'tramp)
- (require 'subr-x)
-+(require 'shrink-path)
-+(require 'cl-macs)
- 
- (declare-function dired-get-file-for-visit "dired")
- (declare-function org-element-property "org-element")
-@@ -203,32 +205,67 @@ the current buffer."
+@@ -203,32 +203,76 @@ the current buffer."
          (funcall function))
      (switch-to-buffer-other-window buffer-name)))
  
 +(defun crux-directory-domain-name()
-+  "Return name.p.~."
-+  (let ((path (split-string (nreverse (shrink-path-dirs default-directory)) "/")))
-+    (string-join (cons (nreverse (nth 1 path)) (nthcdr 2 path)) ".")))
++  default-directory)
 +
  ;;;###autoload
 -(defun crux-visit-term-buffer ()
@@ -48,12 +28,11 @@ index 63e4e58..2937986 100644
 +    (if prefix
 +        (setq session (crux-directory-domain-name)))
 +    (crux-start-or-switch-to (lambda ()
-+                               (ansi-term crux-shell (format "%s(%s)" crux-term-buffer-name session)))
-+                             (format "*%s(%s)*" crux-term-buffer-name session))
++                               (ansi-term crux-shell (format "%s<%s>" crux-term-buffer-name session)))
++                             (format "*%s<%s>*" crux-term-buffer-name session))
 +    (when (null (get-buffer-process (current-buffer)))
 +      (kill-buffer-and-window)
-+      (ansi-term crux-shell (format "%s(%s)" crux-term-buffer-name session)))))
-+
++      (ansi-term crux-shell (format "%s<%s>" crux-term-buffer-name session)))))
 +;;;###autoload
 +(defun crux-visit-shell-buffer (&optional prefix)
 +  "Create or visit a terminal buffer.
@@ -63,10 +42,10 @@ index 63e4e58..2937986 100644
 +    (if prefix
 +        (setq session (crux-directory-domain-name)))
 +    (crux-start-or-switch-to (lambda ()
-+                               (shell (format "*shell(%s)*" session)))
-+                             (format "*shell(%s)*" session))
++                               (shell (format "*shell<%s>*" session)))
++                             (format "*shell<%s>*" session))
 +    (when (null (get-buffer-process (current-buffer)))
-+      (shell (format "*shell(%s)*" session)))))
++      (shell (format "*shell<%s>*" session)))))
  
  ;;;###autoload
 -(defun crux-visit-shell-buffer ()
@@ -95,14 +74,26 @@ index 63e4e58..2937986 100644
 +    (if prefix
 +        (setq session (crux-directory-domain-name)))
 +    (crux-start-or-switch-to (lambda ()
-+                               (vterm (format "*vterm(%s)*" session)))
-+                             (format "*vterm(%s)*" session))
++                               (vterm (format "*vterm<%s>*" session)))
++                             (format "*vterm<%s>*" session))
 +    (when (null (get-buffer-process (current-buffer)))
-+      (vterm (format "*vterm(%s)*" session)))))
++      (vterm (format "*vterm<%s>*" session)))))
++
++(defvar eat-buffer-name)
++;;;###autoload
++(defun crux-visit-eat-buffer (&optional prefix)
++  "Create or visit a eat buffer.
++If PREFIX is not nil, create visit in `default-directory'"
++  (interactive "P")
++  (cl-letf ((eat-buffer-name
++             (format "*eat<%s>" (if prefix (crux-directory-domain-name) "0"))))
++    (with-current-buffer (eat)
++      (eat-line-mode))
++    (pop-to-buffer eat-buffer-name display-comint-buffer-action)))
  
  ;;;###autoload
  (defun crux-indent-rigidly-and-copy-to-clipboard (begin end arg)
-@@ -696,7 +733,8 @@ Doesn't mess with special buffers."
+@@ -696,7 +740,8 @@ Doesn't mess with special buffers."
  (defun crux-create-scratch-buffer ()
    "Create a new scratch buffer."
    (interactive)
@@ -112,7 +103,7 @@ index 63e4e58..2937986 100644
      (switch-to-buffer buf)
      (funcall initial-major-mode)))
  
-@@ -823,5 +861,348 @@ and the entire buffer (in the absense of a region)."
+@@ -823,5 +868,336 @@ and the entire buffer (in the absense of a region)."
            (list (region-beginning) (region-end))
          (list (point) (line-end-position))))))
  
@@ -234,7 +225,7 @@ index 63e4e58..2937986 100644
 +             (buffer-substring-no-properties start end))))
 +      (delete-region start end)
 +      (insert encoded-text))))
-+                                        ;
++;
 +;;###autoload
 +(defun crux-urlencode-region (start end)
 +  "Decode a hex string in the selected region(START END)."
@@ -446,18 +437,6 @@ index 63e4e58..2937986 100644
 +         (format "%s == %s"
 +                 (format-time-string "%Y-%m-%d %H:%M:%S %z" (seconds-to-time (string-to-number date)) t)
 +                 (format-time-string "%Y-%m-%d %H:%M:%S %z" (seconds-to-time (string-to-number date)) nil)))))))
-+
-+(defvar eat-buffer-name)
-+;;;###autoload
-+(defun crux-visit-eat-buffer (&optional prefix)
-+  "Create or visit a eat buffer.
-+If PREFIX is not nil, create visit in `default-directory'"
-+  (interactive "P")
-+  (cl-letf ((eat-buffer-name
-+             (format "*eat<%s>" (if prefix (crux-directory-domain-name) "0"))))
-+    (with-current-buffer (eat)
-+      (eat-line-mode))
-+    (pop-to-buffer eat-buffer-name display-comint-buffer-action)))
 +
  (provide 'crux)
  ;;; crux.el ends here

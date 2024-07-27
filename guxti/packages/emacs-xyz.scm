@@ -19,7 +19,7 @@
 (define-public emacs-crux
   (package
     (name "emacs-crux")
-    (version "0.5.0.20240414")
+    (version "0.5.0.20240727")
     (source
      (origin
        (method git-fetch)
