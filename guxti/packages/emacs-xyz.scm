@@ -554,13 +554,17 @@ can bind a popon to a specific buffer to only show on that buffer.")
 (define-public emacs-isearch-mb
   (package
     (name "emacs-isearch-mb")
-    (version "0.7")
-    (source (origin
-              (method url-fetch)
-              (uri (string-append "https://elpa.gnu.org/packages/isearch-mb-"
-                                  version ".tar"))
-              (sha256 (base32
-                       "1dfjh4ya9515vx0q2dv1brddw350gxd40h1g1vsa783ivvm0hm75"))))
+    (version "0.8")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/astoff/isearch-mb")
+         (commit "927ea1790bd0c474be5f63bd9c23874e6c61fb48")))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1j53hgi635kmpdf6y9iaz7pnfnfkhvqvpzxdp00xmxvx3qrrk414"))))
     (build-system emacs-build-system)
     (home-page "https://github.com/astoff/isearch-mb")
     (synopsis "Control isearch from the minibuffer")
