@@ -315,12 +315,15 @@ automatically made available to YASnippet.")
 (define-public emacs-eev
   (package
     (name "emacs-eev")
-    (version "20240205")
-    (source (origin
-              (method url-fetch)
-              (uri (string-append "https://elpa.gnu.org/packages/eev-" version ".tar"))
-              (sha256
-               (base32 "06psmcf3yi7pincsbhjrcrml0wzwgmlv6xy2fbpg1sg8vlibbgi3"))))
+    (version "20240718")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/edrx/eev")
+             (commit "515e29bf3566911ec5566964a7b994c59f6a9e93")))
+       (file-name (git-file-name name version))
+       (sha256 (base32 "178c9v6n9s1mk6kqp99220774m07ryjka249fmr2vnn7g5x3svlw"))))
     (build-system emacs-build-system)
     (arguments
      `(#:phases
