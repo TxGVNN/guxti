@@ -827,16 +827,16 @@ integration.")
 (define-public emacs-docker-me
   (package
     (name "emacs-docker")
-    (version "2.3.1.20240202")
+    (version "2.3.1.20240917")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/Silex/docker.el")
-             (commit "2.3.1")))
+             (commit "6f8bba0")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "13927ns3393q40gxrfzyqh6ajxzfjg14d0srfxi6ild3pmaz0460"))))
+        (base32 "00bc768jknzym99k56jhbrj1hyzj7yygi513vw2wz89vq2axjdkg"))))
     (propagated-inputs (list emacs-aio emacs-dash emacs-s emacs-tablist emacs-transient))
     (arguments `(#:tests? #false))      ;no tests
     (build-system emacs-build-system)
