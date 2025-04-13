@@ -8,6 +8,7 @@
   #:use-module (guix utils)
   #:use-module (gnu packages)
   #:use-module (gnu packages ncurses)
+  #:use-module (gnu packages curl)
   #:use-module (gnu packages texinfo)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages version-control)
@@ -872,4 +873,43 @@ notes should follow a predictable and descriptive file-naming scheme.  The
 file name must offer a clear indication of what the note is about, without
 reference to any other metadata.  Denote basically streamlines the creation of
 such files while providing facilities to link between them.")
+    (license license:gpl3+)))
+
+(define-public emacs-gptel-me
+  (package
+    (name "emacs-gptel")
+    (version "0.9.8.20250413")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/karthink/gptel")
+                    (commit "55355bdead3d19d520157236f4420241cdb89e63")))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0jl9mk0ac5xwv6cikx7fvimy87ikb9ygylkxh6nv9j3wc2amwn48"))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'use-appropriate-curl
+            (lambda* (#:key inputs #:allow-other-keys)
+              (substitute* "gptel-curl.el"
+                (("\"curl\"")
+                 (string-append "\""
+                                (search-input-file inputs "/bin/curl")
+                                "\"")))
+              (emacs-substitute-variables "gptel.el"
+                ("gptel-use-curl" 't)))))))
+    (inputs (list curl))
+    (propagated-inputs (list emacs-compat emacs-transient))
+    (home-page "https://github.com/karthink/gptel")
+    (synopsis "GPTel is a simple ChatGPT client for Emacs")
+    (description
+     "GPTel is a simple ChatGPT asynchronous client for Emacs with no external
+dependencies.  It can interact with ChatGPT from any Emacs buffer with ChatGPT
+responses encoded in Markdown or Org markup.  It supports conversations, not
+just one-off queries and multiple independent sessions.  It requires an OpenAI
+API key.")
     (license license:gpl3+)))
