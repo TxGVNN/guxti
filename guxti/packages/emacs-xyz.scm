@@ -878,16 +878,16 @@ such files while providing facilities to link between them.")
 (define-public emacs-gptel-me
   (package
     (name "emacs-gptel")
-    (version "0.9.8.20250413")
+    (version "0.9.8.20250718")
     (source (origin
               (method git-fetch)
               (uri (git-reference
                     (url "https://github.com/karthink/gptel")
-                    (commit "55355bdead3d19d520157236f4420241cdb89e63")))
+                    (commit "9f48e1a7bcd8c524c5db92ca007a3fa6ab26bba7")))
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0jl9mk0ac5xwv6cikx7fvimy87ikb9ygylkxh6nv9j3wc2amwn48"))))
+                "1mnj6sg5la29y76ap1v6phkmz3n7avh2lcgifmk4aymrs5q4pzjn"))))
     (build-system emacs-build-system)
     (arguments
      (list
