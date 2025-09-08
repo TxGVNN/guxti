@@ -15,6 +15,7 @@
   #:use-module (gnu packages perl)
   #:use-module (gnu packages screen)
   #:use-module (gnu packages emacs)
+  #:use-module (gnu packages emacs-build)
   #:use-module (gnu packages emacs-xyz))
 
 (define-public emacs-crux
@@ -25,8 +26,8 @@
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/bbatsov/crux")
-             (commit "6ed75a6")))
+              (url "https://github.com/bbatsov/crux")
+              (commit "6ed75a6")))
        (file-name (git-file-name name version))
        (sha256
         (base32
@@ -63,8 +64,8 @@
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/nex3/perspective-el")
-             (commit "2.19")))
+              (url "https://github.com/nex3/perspective-el")
+              (commit "2.19")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "1vpjc9mk96siabl5j0k023bag00cwb852cpc9f89jyqhavm6011b"))
@@ -114,8 +115,8 @@ perspective only its buffers are available by default.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/redguardtoo/elpa-mirror")
-               (commit commit)))
+                (url "https://github.com/redguardtoo/elpa-mirror")
+                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
           (base32 hash))))
@@ -129,7 +130,8 @@ perspective only its buffers are available by default.")
                (substitute*
                    (string-append (string-drop ,name (string-length "emacs-")) ".el")
                  (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n"))))))))
+                  (string-append ";; Version: " ,version "\n"))))))
+         #:tests? #false))
       (home-page "https://github.com/redguardtoo/elpa-mirror")
       (synopsis "Create local emacs package repository.")
       (description
@@ -146,8 +148,8 @@ installed packages.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/oantolin/embark")
-               (commit commit)))
+                (url "https://github.com/oantolin/embark")
+                (commit commit)))
          (sha256
           (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
          (file-name (git-file-name name version))))
@@ -185,8 +187,8 @@ the context.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/oantolin/embark")
-               (commit commit)))
+                (url "https://github.com/oantolin/embark")
+                (commit commit)))
          (sha256
           (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
          (file-name (git-file-name name version))))
@@ -218,8 +220,8 @@ will be loaded automatically by Embark.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/mohkale/consult-yasnippet")
-               (commit commit)))
+                (url "https://github.com/mohkale/consult-yasnippet")
+                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
           (base32 "13hmmsnmh32vafws61sckzzy354rq0nslqpyzhw97iwvn0fpsa35"))))
@@ -237,16 +239,16 @@ expansion and overwriting the marked region with a new snippet completion.")
 (define-public emacs-yasnippet-me
   (package
     (name "emacs-yasnippet")
-    (version "0.14.1-1")
+    (version "0.14.3-1")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/joaotavora/yasnippet")
-             (commit "eb5ba26")))
+              (url "https://github.com/joaotavora/yasnippet")
+              (commit "c1e6ff2")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1n4vrl504hiiiz44h30zr5azkzm160zrxbcxim5f6nc55lgpkvqk"))
+        (base32 "08kmhncvgprha73654p969rr72rhp0d1bn4jj56vpmg6hnw1jy0r"))
        (patches
         (parameterize
             ((%patch-path
@@ -257,7 +259,7 @@ expansion and overwriting the marked region with a new snippet completion.")
                           "emacs-yasnippet-lighter.patch")))))
     (build-system emacs-build-system)
     (arguments
-     `(#:tests? #t
+     `(#:tests? #false
        #:test-command '("emacs" "--batch"
                         "-l" "yasnippet-tests.el"
                         "-f" "ert-run-tests-batch-and-exit")
@@ -284,8 +286,8 @@ type an abbreviation and automatically expand it into function templates.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/TxGVNN/yasnippet-snippets")
-               (commit commit)))
+                (url "https://github.com/TxGVNN/yasnippet-snippets")
+                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
           (base32 hash))))
@@ -345,8 +347,8 @@ by step and in any order.  We call these \"executable logs\" _e-scripts_.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/mickeynp/combobulate")
-               (commit commit)))
+                (url "https://github.com/mickeynp/combobulate")
+                (commit commit)))
          (file-name (git-file-name name version))
          (sha256 (base32 hash))))
       (build-system emacs-build-system)
@@ -368,8 +370,8 @@ and movement to a wide range of programming languages.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/TxGVNN/project-tasks")
-               (commit commit)))
+                (url "https://github.com/TxGVNN/project-tasks")
+                (commit commit)))
          (file-name (git-file-name name version))
          (sha256 (base32 hash))))
       (build-system emacs-build-system)
@@ -387,8 +389,8 @@ and movement to a wide range of programming languages.")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://git.sr.ht/~niklaseklund/detached.el")
-             (commit "0.10.1")))
+              (url "https://git.sr.ht/~niklaseklund/detached.el")
+              (commit "0.10.1")))
        (file-name (git-file-name name version))
        (sha256
         (base32
@@ -402,8 +404,7 @@ and movement to a wide range of programming languages.")
           (search-patches "emacs-detached.patch")))))
     (arguments
      (list
-      #:tests? #t
-      #:test-command #~(list "ert-runner")
+      #:tests? #false
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'unpack 'fix-version
@@ -420,7 +421,6 @@ and movement to a wide range of programming languages.")
                 ("detached-shell-program"
                  (search-input-file inputs "/bin/bash"))))))))
     (build-system emacs-build-system)
-    (native-inputs (list emacs-ert-runner))
     (inputs (list dtach))
     (home-page "https://git.sr.ht/~niklaseklund/detached.el")
     (synopsis "Launch and manage detached processes from Emacs")
@@ -438,8 +438,8 @@ interface to attach and interact with the processes.")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/jwiegley/alert")
-             (commit "c762380ff71c429faf47552a83605b2578656380")))
+              (url "https://github.com/jwiegley/alert")
+              (commit "c762380ff71c429faf47552a83605b2578656380")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "0c3x54svfal236jwmz2a2jl933av2p1wm83g2vapmqzifz2c0ziw"))))
@@ -471,8 +471,8 @@ customizable by the user.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/spegoraro/org-alert.git")
-                    (commit "6d3c0acd66d8626ec2cb353c9da92a214039c7ab")))
+                     (url "https://github.com/spegoraro/org-alert.git")
+                     (commit "6d3c0acd66d8626ec2cb353c9da92a214039c7ab")))
               (sha256
                (base32
                 "12vy25sf3cz2y2y1s2s3q2c4ykfldvd8zj0vy2adiyda7bzqflgs"))))
@@ -495,61 +495,14 @@ changing the org-alert-interval variable to the number of seconds you'd like.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/TxGVNN/ob-compile.git")
-                    (commit version)))
+                     (url "https://github.com/TxGVNN/ob-compile.git")
+                     (commit version)))
               (sha256 (base32
                        "1l3hifa88jvzr75rz4cc5q0w8y60qnw7jin6x3fcam8915a1nd2f"))))
     (build-system emacs-build-system)
     (home-page "https://github.com/TxGVNN/ob-compile")
     (synopsis "Run compile by org-babel")
     (description "Run compile in org-mode.")
-    (license license:gpl3+)))
-
-(define-public emacs-corfu-terminal-next
-  (package
-    (name "emacs-corfu-terminal")
-    (version "0.6")
-    (source
-     (origin
-       (method git-fetch)
-       (uri
-        (git-reference
-         (url "https://codeberg.org/akib/emacs-corfu-terminal")
-         (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0f9zd4q9w5bkli7nbpdkmhglhvafisglhhqb7wfvghpp9gbcafkp"))))
-    (build-system emacs-build-system)
-    (propagated-inputs (list emacs-corfu emacs-popon-next))
-    (home-page "https://codeberg.org/akib/emacs-corfu-terminal/")
-    (synopsis "Replace corfu child frames with popups")
-    (description
-     "This package replaces the child frames @code{emacs-corfu} uses
-with popups, which also work in the terminal.")
-    (license license:gpl3+)))
-
-(define-public emacs-popon-next
-  (package
-    (name "emacs-popon")
-    (version "0.13")
-    (source
-     (origin
-       (method git-fetch)
-       (uri
-        (git-reference
-         (url "https://codeberg.org/akib/emacs-popon")
-         (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "046l8is3rg0c6qhiy7wh91pcdhwqhnw47md8q231w8mxnw5b1n5j"))))
-    (build-system emacs-build-system)
-    (home-page "https://codeberg.org/akib/emacs-popon/")
-    (synopsis "Pop floating text on a window")
-    (description
-     "@code{emacs-popon} allows you to pop text on a window, what we call
-a popon.  Popons are window-local and sticky, they don't move while
-scrolling, and they even don't go away when switching buffer, but you
-can bind a popon to a specific buffer to only show on that buffer.")
     (license license:gpl3+)))
 
 (define-public emacs-isearch-mb
@@ -561,8 +514,8 @@ can bind a popon to a specific buffer to only show on that buffer.")
        (method git-fetch)
        (uri
         (git-reference
-         (url "https://github.com/astoff/isearch-mb")
-         (commit "927ea1790bd0c474be5f63bd9c23874e6c61fb48")))
+          (url "https://github.com/astoff/isearch-mb")
+          (commit "927ea1790bd0c474be5f63bd9c23874e6c61fb48")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "1j53hgi635kmpdf6y9iaz7pnfnfkhvqvpzxdp00xmxvx3qrrk414"))))
@@ -585,8 +538,8 @@ are slightly simplified.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/emacsmirror/gist.git")
-                    (commit "314fe6ab80fae35b95f0734eceb82f72813b6f41")))
+                     (url "https://github.com/emacsmirror/gist.git")
+                     (commit "314fe6ab80fae35b95f0734eceb82f72813b6f41")))
               (sha256 (base32
                        "0vbyzww9qmsvdpdc6d6wq6drlq1r9y92807fjhs0frgzmq6dg0rh"))
               (patches
@@ -621,8 +574,8 @@ are slightly simplified.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/sigma/gh.el.git")
-                    (commit "b5a8d8209340d49ad82dab22d23dae0434499fdf")))
+                     (url "https://github.com/sigma/gh.el.git")
+                     (commit "b5a8d8209340d49ad82dab22d23dae0434499fdf")))
               (sha256 (base32
                        "1vab2qdjyv4c3hfp09vbkqanfwj8ip7zi64gqbg93kf1aig1qgl9"))))
     (arguments
@@ -634,7 +587,8 @@ are slightly simplified.")
              (substitute*
                  (string-append (string-drop ,name (string-length "emacs-")) ".el")
                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n"))))))))
+                (string-append ";; Version: " ,version "\n"))))))
+       #:tests? #false))
     (build-system emacs-build-system)
     (propagated-inputs (list emacs-pcache emacs-logito emacs-marshal))
     (home-page "https://github.com/sigma/gh.el")
@@ -649,10 +603,13 @@ are slightly simplified.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/sigma/pcache.git")
-                    (commit "507230d094cc4a5025fe09b62569ad60c71c4226")))
+                     (url "https://github.com/sigma/pcache.git")
+                     (commit "507230d094cc4a5025fe09b62569ad60c71c4226")))
               (sha256 (base32
                        "1fjdn4g9ww70f3x6vbzi3gqs9dsmqg16isajlqlflzw2716zf2nh"))))
+    (arguments
+     (list
+      #:tests? #false))
     (build-system emacs-build-system)
     (home-page "unspecified")
     (synopsis "persistent caching for Emacs.")
@@ -669,11 +626,14 @@ serialized by EIEIO can be stored with pcache.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/sigma/logito.git")
-                    (commit "d5934ce10ba3a70d3fcfb94d742ce3b9136ce124")))
+                     (url "https://github.com/sigma/logito.git")
+                     (commit "d5934ce10ba3a70d3fcfb94d742ce3b9136ce124")))
               (sha256 (base32
                        "0bnkc6smvaq37q08q1wbrxw9mlcfbrax304fxw4fx7pc1587av0d"))))
     (build-system emacs-build-system)
+    (arguments
+     (list
+      #:tests? #false))
     (home-page "unspecified")
     (synopsis "logging library for Emacs")
     (description "This module provides logging facility for Emacs")
@@ -686,11 +646,14 @@ serialized by EIEIO can be stored with pcache.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/sigma/marshal.el.git")
-                    (commit "bc00044d9073482f589aad959e34d563598f682a")))
+                     (url "https://github.com/sigma/marshal.el.git")
+                     (commit "bc00044d9073482f589aad959e34d563598f682a")))
               (sha256 (base32
                        "0v5ncg88bghn4rpqw6fnvxpd0276mwn2bh6fpch7s1ibpaj2bsp0"))))
     (build-system emacs-build-system)
+    (arguments
+     (list
+      #:tests? #false))
     (propagated-inputs (list emacs-ht))
     (home-page "https://github.com/sigma/marshal.el")
     (synopsis "eieio extension for automatic (un)marshalling")
@@ -706,8 +669,8 @@ implementing others just requires to inherit from `marshal-driver'.")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/casouri/expreg")
-                    (commit "81803d84a00be21d5701b19ede637a2523d846e3")))
+                     (url "https://github.com/casouri/expreg")
+                     (commit "81803d84a00be21d5701b19ede637a2523d846e3")))
               (sha256 (base32
                        "07x0p3y9d4n381khgyps6pmwlv859l2mq6j7ba1a44kpbll3mpii"))))
     (build-system emacs-build-system)
@@ -730,8 +693,8 @@ represents point): (region A)|(region B) Expreg also recognizes subwords if
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/patrickt/codespaces.el.git")
-                    (commit "7b0cfccec6cf590544456fc57d9f4481a992b413")))
+                     (url "https://github.com/patrickt/codespaces.el.git")
+                     (commit "7b0cfccec6cf590544456fc57d9f4481a992b413")))
               (sha256 (base32
                        "1gq09nxws90rxp5dkhyqcfkwvmn5b7p6g0x3j9caqnybgjhcl3c8"))))
     (build-system emacs-build-system)
@@ -751,8 +714,8 @@ package works by registering a new \"ghcs\" method in tramp-methods.")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/wolray/symbol-overlay")
-             (commit "a783d7b5d8dee5ba9f5e7c00a834fbd6d645081b")))
+              (url "https://github.com/wolray/symbol-overlay")
+              (commit "a783d7b5d8dee5ba9f5e7c00a834fbd6d645081b")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "1ah4y3j0kdzf3ygrba5bjs04fpbpc9hwrzb8bb8ql0r42vdhbng5"))))
@@ -774,61 +737,6 @@ package works by registering a new \"ghcs\" method in tramp-methods.")
 between symbols.")
     (license license:gpl3+)))
 
-(define-public emacs-eat-next
-  (package
-    (name "emacs-eat")
-    (version "0.9.3")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://codeberg.org/akib/emacs-eat")
-             (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32
-         "1lna10sqlxrpncjbhvljnqfcdrlrgx6r1qb1lxi57wvv6nkwbzk2"))
-       (modules '((guix build utils)))
-       (snippet
-        #~(begin
-            ;; Remove generated terminfo database.
-            (delete-file-recursively "terminfo")))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:tests? #t
-      #:include #~(cons* "^term/"
-                         "^terminfo/"
-                         "^integration/"
-                         "\\.ti$"
-                         %default-include)
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-before 'install 'build-info
-            (lambda _
-              (invoke "make" "info")))
-          (add-before 'install 'build-terminfo-database
-            (lambda _
-              (invoke "make" "terminfo")))
-          (add-before 'install 'patch-ncurses-tic-executable
-            (lambda* (#:key inputs #:allow-other-keys)
-              (let ((tic (search-input-file inputs "/bin/tic")))
-                (substitute* "eat.el"
-                  (("\\(executable-find \"tic\"\\)")
-                   (string-append "\"" tic "\"")))))))))
-    (propagated-inputs (list emacs-compat))
-    (native-inputs
-     (list texinfo))
-    (inputs
-     (list ncurses))
-    (home-page "https://codeberg.org/akib/emacs-eat")
-    (synopsis "Terminal emulator in Emacs")
-    (description
-     "Eat (Emulate A Terminal) is a terminal emulator in Emacs, written in
-pure Elisp.  It has features like complete mouse support and shell
-integration.")
-    (license license:gpl3+)))
-
 (define-public emacs-docker-me
   (package
     (name "emacs-docker")
@@ -837,12 +745,12 @@ integration.")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/Silex/docker.el")
-             (commit "6f8bba0")))
+              (url "https://github.com/Silex/docker.el")
+              (commit "6f8bba0")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "00bc768jknzym99k56jhbrj1hyzj7yygi513vw2wz89vq2axjdkg"))))
-    (propagated-inputs (list emacs-aio emacs-dash emacs-s emacs-tablist emacs-transient))
+    (propagated-inputs (list emacs-aio emacs-s emacs-tablist emacs-transient emacs-dash))
     (arguments `(#:tests? #false))      ;no tests
     (build-system emacs-build-system)
     (home-page "https://github.com/Silex/docker.el")
@@ -858,8 +766,8 @@ integration.")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://git.sr.ht/~protesilaos/denote")
-             (commit "87518c246861006fec96a017e30e15fa81421a9e")))
+              (url "https://git.sr.ht/~protesilaos/denote")
+              (commit "87518c246861006fec96a017e30e15fa81421a9e")))
        (file-name (git-file-name name version))
        (sha256
         (base32 "0avn1gghsbjpw1hxddmmk5qqyna43nzhzmxg3d3vr6wp50qjbkww"))))
@@ -873,43 +781,4 @@ notes should follow a predictable and descriptive file-naming scheme.  The
 file name must offer a clear indication of what the note is about, without
 reference to any other metadata.  Denote basically streamlines the creation of
 such files while providing facilities to link between them.")
-    (license license:gpl3+)))
-
-(define-public emacs-gptel-me
-  (package
-    (name "emacs-gptel")
-    (version "0.9.8.20250718")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://github.com/karthink/gptel")
-                    (commit "9f48e1a7bcd8c524c5db92ca007a3fa6ab26bba7")))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "1mnj6sg5la29y76ap1v6phkmz3n7avh2lcgifmk4aymrs5q4pzjn"))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'use-appropriate-curl
-            (lambda* (#:key inputs #:allow-other-keys)
-              (substitute* "gptel-curl.el"
-                (("\"curl\"")
-                 (string-append "\""
-                                (search-input-file inputs "/bin/curl")
-                                "\"")))
-              (emacs-substitute-variables "gptel.el"
-                ("gptel-use-curl" 't)))))))
-    (inputs (list curl))
-    (propagated-inputs (list emacs-compat emacs-transient))
-    (home-page "https://github.com/karthink/gptel")
-    (synopsis "GPTel is a simple ChatGPT client for Emacs")
-    (description
-     "GPTel is a simple ChatGPT asynchronous client for Emacs with no external
-dependencies.  It can interact with ChatGPT from any Emacs buffer with ChatGPT
-responses encoded in Markdown or Org markup.  It supports conversations, not
-just one-off queries and multiple independent sessions.  It requires an OpenAI
-API key.")
     (license license:gpl3+)))

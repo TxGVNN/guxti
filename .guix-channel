@@ -3,6 +3,5 @@
  (dependencies
   (channel
    (name guix)
-   (url "https://git.savannah.gnu.org/git/guix.git")
-   (commit "136115fa0fb2ce2004abcf6e1839784b19c49259")
-   (branch "master"))))
+   (url "https://codeberg.org/guix/guix.git")
+   (commit "5f0d6215e4ae19fe33eaf931de242a64f81f29ee"))))
