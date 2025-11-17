@@ -155,7 +155,7 @@ installed packages.")
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-avy emacs-consult))
+       (list emacs-avy emacs-consult-me))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -194,7 +194,7 @@ the context.")
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-consult emacs-embark-me))
+       (list emacs-consult-me emacs-embark-me))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -211,8 +211,8 @@ will be loaded automatically by Embark.")
       (license license:gpl3+))))
 
 (define-public emacs-consult-yasnippet-me
-  (let ((commit "ae0450889484f23dc4ec37518852a2c61b89f184")
-        (revision "20240128"))
+  (let ((commit "a3482dfbdcbe487ba5ff934a1bb6047066ff2194")
+        (revision "20251117"))
     (package
       (name "emacs-consult-yasnippet")
       (version (string-append "0.2." revision))
@@ -224,9 +224,9 @@ will be loaded automatically by Embark.")
                 (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "13hmmsnmh32vafws61sckzzy354rq0nslqpyzhw97iwvn0fpsa35"))))
+          (base32 "0cyzyxmdrk7dcpsw51pv1vz1f6px5yjmbmsa6r74vmshfdmljm3j"))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult emacs-yasnippet-me))
+      (propagated-inputs (list emacs-consult-me emacs-yasnippet-me))
       (home-page "https://github.com/mohkale/consult-yasnippet")
       (synopsis "Consulting-read interface for Yasnippet")
       (description
@@ -781,4 +781,194 @@ notes should follow a predictable and descriptive file-naming scheme.  The
 file name must offer a clear indication of what the note is about, without
 reference to any other metadata.  Denote basically streamlines the creation of
 such files while providing facilities to link between them.")
+    (license license:gpl3+)))
+
+(define-public emacs-vertico-me
+  (package
+    (name "emacs-vertico")
+    (version "2.6")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/minad/vertico")
+             (commit version)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "167kxzp9j6xffblzqqdrbr1bpgkxnlkvkb3szsksrjy25qzkl5sy"))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          ;; Move the extensions source files to the top level, which is
+          ;; included in the EMACSLOADPATH.
+          (add-after 'unpack 'move-source-files
+            (lambda _
+              (let ((el-files (find-files "./extensions" ".*\\.el$")))
+                (for-each (lambda (f)
+                            (rename-file f (basename f)))
+                          el-files))))
+          (add-after 'install 'makeinfo
+            (lambda _
+              (invoke "emacs"
+                      "--batch"
+                      "--eval=(require 'ox-texinfo)"
+                      "--eval=(find-file \"README.org\")"
+                      "--eval=(org-texinfo-export-to-info)")
+              (install-file "vertico.info"
+                            (string-append #$output "/share/info")))))))
+    (native-inputs
+     (list texinfo))
+    (propagated-inputs
+     (list emacs-compat))
+    (home-page "https://github.com/minad/vertico")
+    (synopsis "Vertical interactive completion")
+    (description
+     "Vertico provides a minimalistic vertical completion UI, which is based
+on Emacs' default completion system.  By reusing the default system, it
+achieves full compatibility with built-in Emacs commands and completion
+tables.  Vertico is pretty bare-bone and only provides a minimal set of
+commands.  Additional optional enhancements can be provided externally by
+complementary packages.")
+    (license license:gpl3+)))
+
+
+(define-public emacs-consult-me
+  (package
+    (name "emacs-consult")
+    (version "3.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/minad/consult")
+             (commit version)))
+       (sha256
+        (base32 "0m4fsvz73pfbi4cglihvv6h19zx1iwdx3cqs2wfnxqh589vrkmr4"))
+       (file-name (git-file-name name version))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'install 'makeinfo
+            (lambda _
+              (invoke "emacs"
+                      "--batch"
+                      "--eval=(require 'ox-texinfo)"
+                      "--eval=(find-file \"README.org\")"
+                      "--eval=(org-texinfo-export-to-info)")
+              (install-file "consult.info"
+                            (string-append #$output "/share/info")))))))
+    (native-inputs (list texinfo))
+    (propagated-inputs (list emacs-compat))
+    (home-page "https://github.com/minad/consult")
+    (synopsis "Consulting completing-read")
+    (description "This package provides various handy commands based on the
+Emacs completion function completing-read, which allows quickly selecting from a
+list of candidates.")
+    (license license:gpl3+)))
+
+(define-public emacs-corfu-me
+  (package
+    (name "emacs-corfu")
+    (version "2.5")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/minad/corfu")
+             (commit version)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "14ddl6dby5hlphpcsnwxkvw61hh1cyhilpgsyj17fzw9xwpp4q9w"))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          ;; Move the extensions source files to the top level, which is included
+          ;; in the EMACSLOADPATH.
+          (add-after 'unpack 'move-source-files
+            (lambda _
+              (let ((el-files (find-files "./extensions" ".*\\.el$")))
+                (for-each (lambda (f)
+                            (rename-file f (basename f)))
+                          el-files))))
+          (add-after 'install 'makeinfo
+            (lambda _
+              (invoke "emacs"
+                      "--batch"
+                      "--eval=(require 'ox-texinfo)"
+                      "--eval=(find-file \"README.org\")"
+                      "--eval=(org-texinfo-export-to-info)")
+              (install-file "corfu.info"
+                            (string-append #$output "/share/info")))))))
+    (native-inputs (list texinfo))
+    (propagated-inputs
+     (list emacs-compat))
+    (home-page "https://github.com/minad/corfu")
+    (synopsis "Completion overlay region function")
+    (description
+     "Corfu enhances the default completion in region function with a completion
+overlay.  The current candidates are shown in a popup overlay below or above
+the point.  Corfu can be considered the minimalistic
+@code{completion-in-region} counterpart of the Vertico minibuffer UI.")
+    (license license:gpl3+)))
+
+(define-public emacs-corfu-terminal
+  (package
+    (name "emacs-corfu-terminal")
+    (version "0.7")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://codeberg.org/akib/emacs-corfu-terminal")
+         (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0ddj0x1mivrnxpdmnim9vkdpyjrhkfkvmcpfas1wznn4wfr559yj"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-corfu-me emacs-popon))
+    (home-page "https://codeberg.org/akib/emacs-corfu-terminal/")
+    (synopsis "Replace corfu child frames with popups")
+    (description
+     "This package replaces the child frames @code{emacs-corfu} uses
+with popups, which also work in the terminal.")
+    (license license:gpl3+)))
+
+(define-public emacs-marginalia-me
+  (package
+    (name "emacs-marginalia")
+    (version "2.5")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/minad/marginalia")
+             (commit version)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "064kc6p8zh6vbrcg06jilc7s2zc2kb8bddbqxr0mdypm8pwvymg4"))))
+    (build-system emacs-build-system)
+    (arguments
+     (list
+      #:tests? #f                       ;no tests
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-before 'install 'makeinfo
+            (lambda _ (emacs-makeinfo))))))
+    (native-inputs (list texinfo))
+    (propagated-inputs
+     (list emacs-compat))
+    (home-page "https://github.com/minad/marginalia")
+    (synopsis "Marginalia in the minibuffer completions")
+    (description
+     "This package provides Marginalia mode which adds marginalia to the
+minibuffer completions.  Marginalia are marks or annotations placed at the
+margin of the page of a book or in this case helpful colorful annotations
+placed at the margin of the minibuffer for your completion candidates.")
     (license license:gpl3+)))
