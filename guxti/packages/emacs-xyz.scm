@@ -917,17 +917,17 @@ the point.  Corfu can be considered the minimalistic
 @code{completion-in-region} counterpart of the Vertico minibuffer UI.")
     (license license:gpl3+)))
 
-(define-public emacs-corfu-terminal
+(define-public emacs-corfu-terminal-me
   (package
     (name "emacs-corfu-terminal")
-    (version "0.7")
+    (version "0.7.20251118")
     (source
      (origin
        (method git-fetch)
        (uri
         (git-reference
          (url "https://codeberg.org/akib/emacs-corfu-terminal")
-         (commit (string-append "v" version))))
+         (commit (string-append "v0.7"))))
        (file-name (git-file-name name version))
        (sha256
         (base32 "0ddj0x1mivrnxpdmnim9vkdpyjrhkfkvmcpfas1wznn4wfr559yj"))))
