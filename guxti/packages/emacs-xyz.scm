@@ -59,16 +59,16 @@
 (define-public emacs-perspective-me
   (package
     (name "emacs-perspective")
-    (version "2.19.1")
+    (version "2.20.1")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
               (url "https://github.com/nex3/perspective-el")
-              (commit "2.19")))
+              (commit "2.20")))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1vpjc9mk96siabl5j0k023bag00cwb852cpc9f89jyqhavm6011b"))
+        (base32 "108n8xgyxf0mxv6l0mbqb9s0v20bdnj4xcd2mi0zbl46r48cq6gp"))
        (patches
         (parameterize
             ((%patch-path
