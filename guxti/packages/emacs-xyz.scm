@@ -92,47 +92,9 @@
 installed packages.")
       (license license:gpl3+))))
 
-(define-public emacs-embark-me
-  (let ((commit "1.1")) ;version bump
-    (package
-      (name "emacs-embark")
-      (version (string-append commit ".1"))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-                (url "https://github.com/oantolin/embark")
-                (commit commit)))
-         (sha256
-          (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
-         (file-name (git-file-name name version))))
-      (build-system emacs-build-system)
-      (propagated-inputs
-       (list emacs-avy emacs-consult-me))
-      (arguments
-       `(#:phases
-         (modify-phases %standard-phases
-           (add-after
-               'unpack 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n")))))
-           (add-after 'unpack 'delete-files
-             (lambda _
-               (delete-file "embark-consult.el")
-               (delete-file "avy-embark-collect.el"))))))
-      (home-page "https://github.com/oantolin/embark")
-      (synopsis "Emacs mini-buffer actions rooted in keymaps")
-      (description
-       "This package provides a sort of right-click contextual menu for Emacs
-offering you relevant @emph{actions} to use on a @emph{target} determined by
-the context.")
-      (license license:gpl3+))))
 
 (define-public emacs-embark-consult
-  (let ((commit "1.1")) ;version bump
+  (let ((commit "1.2")) ;version bump
     (package
       (name "emacs-embark-consult")
       (version (string-append commit ".1"))
@@ -143,11 +105,11 @@ the context.")
                 (url "https://github.com/oantolin/embark")
                 (commit commit)))
          (sha256
-          (base32 "1361jvwr3wjbpmq6dfkrhhhv9vrmqpkp1j18syp311g6h8hzi3hg"))
+          (base32 "1y97kibzz36wrzcjv997qp5pliikda0dhsm9461pin3q5gv8y6kq"))
          (file-name (git-file-name name version))))
       (build-system emacs-build-system)
       (propagated-inputs
-       (list emacs-consult-me emacs-embark-me))
+       (list emacs-consult emacs-embark))
       (arguments
        `(#:phases
          (modify-phases %standard-phases
@@ -179,7 +141,7 @@ will be loaded automatically by Embark.")
          (sha256
           (base32 "0cyzyxmdrk7dcpsw51pv1vz1f6px5yjmbmsa6r74vmshfdmljm3j"))))
       (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult-me emacs-yasnippet-me))
+      (propagated-inputs (list emacs-consult emacs-yasnippet-me))
       (home-page "https://github.com/mohkale/consult-yasnippet")
       (synopsis "Consulting-read interface for Yasnippet")
       (description
@@ -290,28 +252,6 @@ format that is reasonably readable and that is easy to \"play back\" later, step
 by step and in any order.  We call these \"executable logs\" _e-scripts_.")
     (license license:gpl3+)))
 
-(define-public emacs-combobulate
-  (let ((commit "c7e4670a3047c0b58dff3746577a5c8e5832cfba")
-        (hash "063w2sm0c7xhg3ml31xp870azb0sv7z689lnbnjnbl3rfdy4kg50"))
-    (package
-      (name "emacs-combobulate")
-      (version "0.1.20240217")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-                (url "https://github.com/mickeynp/combobulate")
-                (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256 (base32 hash))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:include (cons* "^build\\/" %default-include)))
-      (home-page "https://github.com/mickeynp/combobulate")
-      (synopsis "Structured Navigation and Editing.")
-      (description "Combobulate is a package that adds structured editing
-and movement to a wide range of programming languages.")
-      (license license:gpl3+))))
 
 (define-public emacs-project-tasks
   (let ((commit "926e97dc5b8b2caadbdfa2e791397f14fa459574")
@@ -640,195 +580,4 @@ between symbols.")
     (home-page "https://github.com/Silex/docker.el")
     (synopsis "Manage docker from Emacs")
     (description "This package provides an Emacs interface for Docker.")
-    (license license:gpl3+)))
-
-
-(define-public emacs-vertico-me
-  (package
-    (name "emacs-vertico")
-    (version "2.6")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/minad/vertico")
-             (commit version)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "167kxzp9j6xffblzqqdrbr1bpgkxnlkvkb3szsksrjy25qzkl5sy"))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          ;; Move the extensions source files to the top level, which is
-          ;; included in the EMACSLOADPATH.
-          (add-after 'unpack 'move-source-files
-            (lambda _
-              (let ((el-files (find-files "./extensions" ".*\\.el$")))
-                (for-each (lambda (f)
-                            (rename-file f (basename f)))
-                          el-files))))
-          (add-after 'install 'makeinfo
-            (lambda _
-              (invoke "emacs"
-                      "--batch"
-                      "--eval=(require 'ox-texinfo)"
-                      "--eval=(find-file \"README.org\")"
-                      "--eval=(org-texinfo-export-to-info)")
-              (install-file "vertico.info"
-                            (string-append #$output "/share/info")))))))
-    (native-inputs
-     (list texinfo))
-    (propagated-inputs
-     (list emacs-compat))
-    (home-page "https://github.com/minad/vertico")
-    (synopsis "Vertical interactive completion")
-    (description
-     "Vertico provides a minimalistic vertical completion UI, which is based
-on Emacs' default completion system.  By reusing the default system, it
-achieves full compatibility with built-in Emacs commands and completion
-tables.  Vertico is pretty bare-bone and only provides a minimal set of
-commands.  Additional optional enhancements can be provided externally by
-complementary packages.")
-    (license license:gpl3+)))
-
-
-(define-public emacs-consult-me
-  (package
-    (name "emacs-consult")
-    (version "3.0")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/minad/consult")
-             (commit version)))
-       (sha256
-        (base32 "0m4fsvz73pfbi4cglihvv6h19zx1iwdx3cqs2wfnxqh589vrkmr4"))
-       (file-name (git-file-name name version))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'install 'makeinfo
-            (lambda _
-              (invoke "emacs"
-                      "--batch"
-                      "--eval=(require 'ox-texinfo)"
-                      "--eval=(find-file \"README.org\")"
-                      "--eval=(org-texinfo-export-to-info)")
-              (install-file "consult.info"
-                            (string-append #$output "/share/info")))))))
-    (native-inputs (list texinfo))
-    (propagated-inputs (list emacs-compat))
-    (home-page "https://github.com/minad/consult")
-    (synopsis "Consulting completing-read")
-    (description "This package provides various handy commands based on the
-Emacs completion function completing-read, which allows quickly selecting from a
-list of candidates.")
-    (license license:gpl3+)))
-
-(define-public emacs-corfu-me
-  (package
-    (name "emacs-corfu")
-    (version "2.5")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/minad/corfu")
-             (commit version)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "14ddl6dby5hlphpcsnwxkvw61hh1cyhilpgsyj17fzw9xwpp4q9w"))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          ;; Move the extensions source files to the top level, which is included
-          ;; in the EMACSLOADPATH.
-          (add-after 'unpack 'move-source-files
-            (lambda _
-              (let ((el-files (find-files "./extensions" ".*\\.el$")))
-                (for-each (lambda (f)
-                            (rename-file f (basename f)))
-                          el-files))))
-          (add-after 'install 'makeinfo
-            (lambda _
-              (invoke "emacs"
-                      "--batch"
-                      "--eval=(require 'ox-texinfo)"
-                      "--eval=(find-file \"README.org\")"
-                      "--eval=(org-texinfo-export-to-info)")
-              (install-file "corfu.info"
-                            (string-append #$output "/share/info")))))))
-    (native-inputs (list texinfo))
-    (propagated-inputs
-     (list emacs-compat))
-    (home-page "https://github.com/minad/corfu")
-    (synopsis "Completion overlay region function")
-    (description
-     "Corfu enhances the default completion in region function with a completion
-overlay.  The current candidates are shown in a popup overlay below or above
-the point.  Corfu can be considered the minimalistic
-@code{completion-in-region} counterpart of the Vertico minibuffer UI.")
-    (license license:gpl3+)))
-
-(define-public emacs-corfu-terminal-me
-  (package
-    (name "emacs-corfu-terminal")
-    (version "0.7.20251118")
-    (source
-     (origin
-       (method git-fetch)
-       (uri
-        (git-reference
-         (url "https://codeberg.org/akib/emacs-corfu-terminal")
-         (commit (string-append "v0.7"))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0ddj0x1mivrnxpdmnim9vkdpyjrhkfkvmcpfas1wznn4wfr559yj"))))
-    (build-system emacs-build-system)
-    (propagated-inputs (list emacs-corfu-me emacs-popon))
-    (home-page "https://codeberg.org/akib/emacs-corfu-terminal/")
-    (synopsis "Replace corfu child frames with popups")
-    (description
-     "This package replaces the child frames @code{emacs-corfu} uses
-with popups, which also work in the terminal.")
-    (license license:gpl3+)))
-
-(define-public emacs-marginalia-me
-  (package
-    (name "emacs-marginalia")
-    (version "2.5")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/minad/marginalia")
-             (commit version)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "064kc6p8zh6vbrcg06jilc7s2zc2kb8bddbqxr0mdypm8pwvymg4"))))
-    (build-system emacs-build-system)
-    (arguments
-     (list
-      #:tests? #f                       ;no tests
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-before 'install 'makeinfo
-            (lambda _ (emacs-makeinfo))))))
-    (native-inputs (list texinfo))
-    (propagated-inputs
-     (list emacs-compat))
-    (home-page "https://github.com/minad/marginalia")
-    (synopsis "Marginalia in the minibuffer completions")
-    (description
-     "This package provides Marginalia mode which adds marginalia to the
-minibuffer completions.  Marginalia are marks or annotations placed at the
-margin of the page of a book or in this case helpful colorful annotations
-placed at the margin of the minibuffer for your completion candidates.")
     (license license:gpl3+)))
