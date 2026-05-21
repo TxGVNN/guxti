@@ -56,53 +56,6 @@
      "@code{crux} provides a collection of useful functions for Emacs.")
     (license license:gpl3+)))
 
-(define-public emacs-perspective-me
-  (package
-    (name "emacs-perspective")
-    (version "2.20.1")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://github.com/nex3/perspective-el")
-              (commit "2.20")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "108n8xgyxf0mxv6l0mbqb9s0v20bdnj4xcd2mi0zbl46r48cq6gp"))
-       (patches
-        (parameterize
-            ((%patch-path
-              (map (lambda (directory)
-                     (string-append directory "/guxti/packages/patches"))
-                   %load-path)))
-          (search-patches "emacs-perspective.patch")))))
-    (build-system emacs-build-system)
-    (arguments
-     `(#:phases
-       (modify-phases %standard-phases
-         (add-after
-             'unpack 'fix-version
-           (lambda _
-             (substitute*
-                 (string-append (string-drop ,name (string-length "emacs-")) ".el")
-               (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                (string-append ";; Version: " ,version "\n"))))))
-       #:tests? #t
-       #:test-command '("emacs" "-Q" "-batch" "-L" "."
-                        "-l" "test/test-perspective.el"
-                        "-f" "ert-run-tests-batch-and-exit")))
-    (home-page "https://github.com/nex3/perspective-el")
-    (synopsis "Switch between named \"perspectives\"")
-    (description
-     "This package provides tagged workspaces in Emacs, similar to workspaces in
-windows managers such as Awesome and XMonad.  @code{perspective.el} provides
-multiple workspaces (or \"perspectives\") for each Emacs frame.  Each
-perspective is composed of a window configuration and a set of buffers.
-Switching to a perspective activates its window configuration, and when in a
-perspective only its buffers are available by default.")
-    ;; This package is released under the same license as Emacs (GPLv3+) or
-    ;; the Expat license.
-    (license license:gpl3+)))
 
 (define-public emacs-elpa-mirror
   (let ((version "2.2.2.20230318")
@@ -365,7 +318,7 @@ and movement to a wide range of programming languages.")
         (hash "1zgnn3jrvadfvg5sldphkjkdca8h6m6y5g6q36syl6gv9i5jgv8r"))
     (package
       (name "emacs-project-tasks")
-      (version "0.7.1")
+      (version "0.7.2")
       (source
        (origin
          (method git-fetch)
@@ -380,55 +333,6 @@ and movement to a wide range of programming languages.")
       (description "Manage your tasks in a project by using org file and code blocks.
  I will call it is Tasks As Code.")
       (license license:gpl3+))))
-
-(define-public emacs-detached-me
-  (package
-    (name "emacs-detached")
-    (version "0.10.1.20240220")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://git.sr.ht/~niklaseklund/detached.el")
-              (commit "0.10.1")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32
-         "0dvvyqc0nw9has54vps10f5iv831cb29vqvbvx0m2djv9pacqp17"))
-       (patches
-        (parameterize
-            ((%patch-path
-              (map (lambda (directory)
-                     (string-append directory "/guxti/packages/patches"))
-                   %load-path)))
-          (search-patches "emacs-detached.patch")))))
-    (arguments
-     (list
-      #:tests? #false
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'fix-version
-            (lambda _
-              (substitute*
-                  (string-append (string-drop #$name (string-length "emacs-")) ".el")
-                (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                 (string-append ";; Version: " #$version "\n")))))
-          (add-after 'unpack 'configure
-            (lambda* (#:key inputs #:allow-other-keys)
-              (emacs-substitute-variables "detached.el"
-                ("detached-dtach-program"
-                 (search-input-file inputs "/bin/dtach"))
-                ("detached-shell-program"
-                 (search-input-file inputs "/bin/bash"))))))))
-    (build-system emacs-build-system)
-    (inputs (list dtach))
-    (home-page "https://git.sr.ht/~niklaseklund/detached.el")
-    (synopsis "Launch and manage detached processes from Emacs")
-    (description
-     "The Detached package allows users to run processes detached from Emacs.
-It provides integration with multiple built-in modes, as well as providing an
-interface to attach and interact with the processes.")
-    (license license:gpl3+)))
 
 (define-public emacs-alert-next
   (package
@@ -686,26 +590,6 @@ represents point): (region A)|(region B) Expreg also recognizes subwords if
 ‘subword-mode’ is on.")
     (license license:gpl3+)))
 
-(define-public emacs-codespaces
-  (package
-    (name "emacs-codespaces")
-    (version "0.2")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                     (url "https://github.com/patrickt/codespaces.el.git")
-                     (commit "7b0cfccec6cf590544456fc57d9f4481a992b413")))
-              (sha256 (base32
-                       "1gq09nxws90rxp5dkhyqcfkwvmn5b7p6g0x3j9caqnybgjhcl3c8"))))
-    (build-system emacs-build-system)
-    (home-page "https://github.com/patrickt/codespaces.el")
-    (synopsis "Connect to GitHub Codespaces via TRAMP")
-    (description
-     "This package provides support for connecting to GitHub Codespaces via TRAMP in
-Emacs.  It also provides a completing-read interface to select codespaces.  This
-package works by registering a new \"ghcs\" method in tramp-methods.")
-    (license license:gpl3+)))
-
 (define-public emacs-symbol-overlay
   (package
     (name "emacs-symbol-overlay")
@@ -758,30 +642,6 @@ between symbols.")
     (description "This package provides an Emacs interface for Docker.")
     (license license:gpl3+)))
 
-(define-public emacs-denote
-  (package
-    (name "emacs-denote")
-    (version "2.2.4.20240307")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://git.sr.ht/~protesilaos/denote")
-              (commit "87518c246861006fec96a017e30e15fa81421a9e")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0avn1gghsbjpw1hxddmmk5qqyna43nzhzmxg3d3vr6wp50qjbkww"))))
-    (build-system emacs-build-system)
-    (native-inputs (list texinfo))
-    (home-page "https://protesilaos.com/emacs/denote/")
-    (synopsis "Simple notes for Emacs")
-    (description
-     "Denote is a simple note-taking tool for Emacs.  It is based on the idea that
-notes should follow a predictable and descriptive file-naming scheme.  The
-file name must offer a clear indication of what the note is about, without
-reference to any other metadata.  Denote basically streamlines the creation of
-such files while providing facilities to link between them.")
-    (license license:gpl3+)))
 
 (define-public emacs-vertico-me
   (package
