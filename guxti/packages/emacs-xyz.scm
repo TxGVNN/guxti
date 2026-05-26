@@ -561,6 +561,30 @@ represents point): (region A)|(region B) Expreg also recognizes subwords if
 between symbols.")
     (license license:gpl3+)))
 
+
+(define-public emacs-tramp-hlo
+  (package
+    (name "emacs-tramp-hlo")
+    (version "0.0.2")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://elpa.gnu.org/packages/"
+                           "tramp-hlo-" version ".tar"))
+       (sha256
+        (base32 "1bs3wz644ibc332nxzf880zklmwsfwhlimdvamas3568ns21xqn0"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-tramp))
+    (home-page "https://savannah.gnu.org/projects/tramp")
+    (synopsis "Remote file editing package for Emacs")
+    (description
+     "Tramp stands for ``Transparent Remote (file) Access, Multiple
+Protocol''.  This package provides remote file editing, using
+a combination of @command{rsh} and @command{rcp} or other work-alike
+programs, such as @command{ssh} and @command{scp}.")
+    (license license:gpl3+)))
+
+
 (define-public emacs-docker-me
   (package
     (name "emacs-docker")
