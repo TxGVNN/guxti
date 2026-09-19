@@ -4,7 +4,7 @@
   (channel
    (name guix)
    (url "https://codeberg.org/guix/guix.git")
-   (commit "ed71d1f9921bb1aaefd71b03e6e344d8cc5593e5")
+   (commit "0a50703abd5bfb27c7e130644db3045032604751")
    (introduction
     (channel-introduction
      (version 0)
