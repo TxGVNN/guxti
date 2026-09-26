@@ -125,119 +125,16 @@ installed packages.")
 will be loaded automatically by Embark.")
       (license license:gpl3+))))
 
-(define-public emacs-consult-yasnippet-me
-  (let ((commit "a3482dfbdcbe487ba5ff934a1bb6047066ff2194")
-        (revision "20251117"))
-    (package
-      (name "emacs-consult-yasnippet")
-      (version (string-append "0.2." revision))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-                (url "https://github.com/mohkale/consult-yasnippet")
-                (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "0cyzyxmdrk7dcpsw51pv1vz1f6px5yjmbmsa6r74vmshfdmljm3j"))))
-      (build-system emacs-build-system)
-      (propagated-inputs (list emacs-consult emacs-yasnippet-me))
-      (home-page "https://github.com/mohkale/consult-yasnippet")
-      (synopsis "Consulting-read interface for Yasnippet")
-      (description
-       "This package allows you to expand Yasnippet' snippets through
-a completing-read interface.  It supports previewing the current snippet
-expansion and overwriting the marked region with a new snippet completion.")
-      (license license:gpl3+))))
-
-
-(define-public emacs-yasnippet-me
-  (package
-    (name "emacs-yasnippet")
-    (version "0.14.3-1")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://github.com/joaotavora/yasnippet")
-              (commit "c1e6ff2")))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "08kmhncvgprha73654p969rr72rhp0d1bn4jj56vpmg6hnw1jy0r"))
-       (patches
-        (parameterize
-            ((%patch-path
-              (map (lambda (directory)
-                     (string-append directory "/guxti/packages/patches"))
-                   %load-path)))
-          (search-patches "emacs-yasnippet-fix-empty-snippet-next.patch"
-                          "emacs-yasnippet-lighter.patch")))))
-    (build-system emacs-build-system)
-    (arguments
-     `(#:tests? #false
-       #:test-command '("emacs" "--batch"
-                        "-l" "yasnippet-tests.el"
-                        "-f" "ert-run-tests-batch-and-exit")
-       #:phases
-       (modify-phases %standard-phases
-         ;; Set HOME, otherwise test-rebindings fails.
-         (add-before 'check 'set-home
-           (lambda _
-             (setenv "HOME" (getcwd))
-             #t)))))
-    (home-page "https://github.com/joaotavora/yasnippet")
-    (synopsis "Yet another snippet extension for Emacs")
-    (description "YASnippet is a template system for Emacs.  It allows you to
-type an abbreviation and automatically expand it into function templates.")
-    (license license:gpl3+)))
-
-(define-public emacs-yasnippet-snippets-me
-  (let ((commit "13dec7de")
-        (hash "0psjdrqhwwk42k3jfjffrgnpa2dq8nznb8xfh4v4jbw0wqlq6vlm"))
-    (package
-      (name "emacs-yasnippet-snippets")
-      (version "1.1.20240724")
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-                (url "https://github.com/TxGVNN/yasnippet-snippets")
-                (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 hash))))
-      (build-system emacs-build-system)
-      (arguments
-       `(#:phases
-         (modify-phases %standard-phases
-           (add-before 'build 'set-home
-             (lambda _ (setenv "HOME" (getcwd))))
-           (add-after
-               'unpack 'fix-version
-             (lambda _
-               (substitute*
-                   (string-append (string-drop ,name (string-length "emacs-")) ".el")
-                 (("^;; Version: ([^/[:blank:]\r\n]*)(.*)$")
-                  (string-append ";; Version: " ,version "\n"))))))
-         #:include (cons* "^snippets\\/" %default-include)))
-      (propagated-inputs
-       (list emacs-yasnippet-me))
-      (home-page "https://github.com/TxGVNN/yasnippet-snippets")
-      (synopsis "Collection of YASnippet snippets for many languages")
-      (description "This package provides an extensive collection of YASnippet
-snippets.  When this package is installed, the extra snippets it provides are
-automatically made available to YASnippet.")
-      (license license:gpl3+))))
 
 (define-public emacs-eev
   (package
     (name "emacs-eev")
-    (version "20240205")
+    (version "20260903")
     (source (origin
               (method url-fetch)
               (uri (string-append "https://elpa.gnu.org/packages/eev-" version ".tar"))
               (sha256
-               (base32 "06psmcf3yi7pincsbhjrcrml0wzwgmlv6xy2fbpg1sg8vlibbgi3"))))
+               (base32 "15k4dmj4brcx0kwrbgp57k7bv148vc0gvhnk8wwif4645zrwq4hg"))))
     (build-system emacs-build-system)
     (arguments
      `(#:phases
@@ -505,30 +402,6 @@ serialized by EIEIO can be stored with pcache.")
      "Inspired by Go tagged structs.  alist, plist and json drivers are provided, but
 implementing others just requires to inherit from `marshal-driver'.")
     (license #f)))
-
-(define-public emacs-expreg
-  (package
-    (name "emacs-expreg")
-    (version "1.0.0")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                     (url "https://github.com/casouri/expreg")
-                     (commit "81803d84a00be21d5701b19ede637a2523d846e3")))
-              (sha256 (base32
-                       "07x0p3y9d4n381khgyps6pmwlv859l2mq6j7ba1a44kpbll3mpii"))))
-    (build-system emacs-build-system)
-    (home-page "https://github.com/casouri/expreg")
-    (synopsis "Simple expand region")
-    (description
-     "This is just like expand-region, but (1) we generate all regions at once, and
-(2) should be easier to debug, and (3) we out-source language-specific
-expansions to tree-sitter.  Bind ‘expreg-expand’ and ‘expreg-contract’ and start
-using it.  Note that if point is in between two possible regions, we only keep
-the region after point.  In the example below, only region B is kept (“|”
-represents point): (region A)|(region B) Expreg also recognizes subwords if
-‘subword-mode’ is on.")
-    (license license:gpl3+)))
 
 (define-public emacs-symbol-overlay
   (package
